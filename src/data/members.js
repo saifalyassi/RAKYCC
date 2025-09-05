@@ -1,3 +1,5 @@
+import positions from './photoPositions.json'
+
 const members = [
   {
     id: 1,
@@ -18,6 +20,7 @@ const members = [
     name: 'فاطمة الشرهان',
     role: 'أمين السر',
   photo: 'assets/member 3.jpg',
+  photoPosition: 'center 20%',
     description: 'Coordinates council activities and documentation.'
   },
   {
@@ -25,6 +28,7 @@ const members = [
     name: 'سيف الياسي',
     role: 'مسؤول البيانات والاحصاء',
   photo: 'assets/member 4.jpg',
+  photoPosition: 'center 15%',
     description: 'Manages council a.'
   },
   {
@@ -32,6 +36,7 @@ const members = [
     name: 'آمنة الشحي',
     role: 'مسؤول التخطيط والتطوير',
   photo: 'assets/member 5.jpg',
+  photoPosition: 'center 20%',
     description: 'Organizes and oversees council events and activities.'
   },
   {
@@ -39,6 +44,7 @@ const members = [
     name: 'خالد البلوشي',
     role: 'مسؤول الإتصال والشراكة',
   photo: 'assets/member 6.png',
+  photoPosition: 'center 12%',
     description: 'Handles media relations and council communications.'
   },
   {
@@ -46,6 +52,7 @@ const members = [
     name: 'مريم الشحي',
     role: 'مسؤول المبادرات والمشاريع',
   photo: 'assets/member 7.jpg',
+  photoPosition: 'center 30%',
     description: 'Builds partnerships with local organizations.'
   },
   {
@@ -53,6 +60,7 @@ const members = [
     name: 'هزاع الشحي',
     role: 'المسؤول الإعلامي',
   photo: 'assets/member 8.jpg',
+  photoPosition: 'center 15%',
     description: 'Represents youth interests and feedback.'
   },
   {
@@ -60,6 +68,7 @@ const members = [
     name: 'شذى المهيري',
     role: 'مسؤول المبادرات والمشاريع',
   photo: 'assets/member 9.jpg',
+  photoPosition: 'center 15%',
     description: 'Maintains council website and digital presence.'
   },
   {
@@ -71,4 +80,7 @@ const members = [
   }
 ]
 
-export default members
+// merge positions from photoPositions.json (if present)
+const merged = members.map(m => ({ ...m, photoPosition: positions[m.id] ?? m.photoPosition }))
+
+export default merged

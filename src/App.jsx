@@ -1,8 +1,14 @@
 import React from 'react'
 import MemberCard from './components/MemberCard'
 import members from './data/members'
+import { useState } from 'react'
+import PhotoAdjuster from './components/PhotoAdjuster'
 
 export default function App() {
+  const [adjustments, setAdjustments] = useState({})
+
+  const showAdjuster = typeof window !== 'undefined' && window.location.search.includes('adjust=1')
+
   return (
     <div className="app-root">
       <div className="top-bg">
@@ -20,10 +26,14 @@ export default function App() {
         <div className="cards-bg">
           <section className="cards-grid">
             {members.map((m, idx) => (
-              <MemberCard key={m.id} {...m} className={idx === 0 ? 'highlight-card' : ''} />
+              <MemberCard key={m.id} {...m} photoPosition={adjustments[m.id] ?? m.photoPosition} className={idx === 0 ? 'highlight-card' : ''} />
             ))}
           </section>
         </div>
+        {/* PhotoAdjuster: toggle via ?adjust=1 in URL */}
+        {showAdjuster && (
+          <PhotoAdjuster members={members} adjustments={adjustments} setAdjustments={setAdjustments} />
+        )}
       </main>
       <footer className="site-footer">© {new Date().getFullYear()} RAKYC Council</footer>
     </div>

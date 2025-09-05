@@ -121,7 +121,15 @@ body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helveti
   }
 }
 
-.cards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;width:100%;max-width:1100px;margin-top:24px}
+.cards-grid{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center; /* center items so last (partial) row is centered */
+  gap:18px;
+  width:100%;
+  max-width:1100px;
+  margin-top:24px;
+}
 
 .member-card {
   background: #f5e9da;
@@ -133,6 +141,10 @@ body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helveti
   align-items:center;
   padding:16px;
   transition:transform .18s ease,box-shadow .18s ease;
+  /* make cards a consistent, responsive size in the flex layout */
+  flex: 1 1 240px; /* grow, shrink, base width */
+  min-width: 220px;
+  max-width: 320px;
 }
 
 .member-card:hover{
@@ -156,8 +168,11 @@ body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helveti
   width:100%;
   height:100%;
   object-fit:cover;
+  object-position:center; /* ensure image is centered within the frame */
   display:block;
 }
+
+/* Per-image adjustments are applied via the `photoPosition` prop for specific members */
 .card-body{padding:12px;text-align:center}
 .member-name{margin:8px 0 4px;font-size:1.05rem;color:#2d2320}
 .member-role{margin:0;font-weight:600;color:#bfa77a}
@@ -167,8 +182,11 @@ body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helveti
 
 @media (max-width: 600px) {
   .cards-grid {
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     gap: 12px;
+    width: 100%;
   }
   .member-card {
     width: 95vw;
