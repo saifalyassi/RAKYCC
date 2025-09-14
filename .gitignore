@@ -1,0 +1,26 @@
+# dependencies
+node_modules/
+
+# build output
+/dist
+
+# local env files
+.env
+.env.local
+
+# cache
+.cache/
+.vite/
+
+# logs
+npm-debug.log*
+pnpm-debug.log*
+package-lock.json
+
+# Editor/OS files
+.DS_Store
+.vscode/
+.idea/
+
+# gh-pages cache
+node_modules/.cache/

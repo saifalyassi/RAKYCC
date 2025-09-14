@@ -29,7 +29,7 @@ const members = [
     role: 'مسؤول البيانات والاحصاء',
   photo: 'assets/member 4.jpg',
   photoPosition: 'center 15%',
-    description: 'Manages council a.'
+    description: 'Testt'
   },
   {
     id: 5,

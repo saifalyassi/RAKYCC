@@ -37,11 +37,45 @@
 
 *{box-sizing:border-box}
 html,body,#root{height:100%}
-body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial; background:var(--bg); color:#4b3e2e}
+body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial; background:var(--bg); color:#4b3e2e; overflow-x:hidden}
 
 .app-root{min-height:100%;display:flex;flex-direction:column;align-items:center;padding:0}
+.left-nav{
+  position:fixed;
+  left:0;
+  top:0;
+  height:100vh;
+  width:220px;
+  background:rgba(245,233,218,0.95);
+  box-shadow:2px 0 12px rgba(0,0,0,0.06);
+  padding:24px 12px;
+  z-index:1300;
+}
+.left-nav ul{list-style:none;padding:0;margin:0}
+.left-nav li{margin:8px 0}
+.left-nav a{color:#5e4d39;text-decoration:none;font-weight:600}
+
+.content-with-sidebar{margin-left:0;width:100%}
+
+/* Sidebar overlays content now and does not take layout space */
+.left-nav{transform:translateX(-110%);transition:transform .22s ease,visibility .22s}
+.left-nav.open{transform:translateX(0);visibility:visible}
+
+/* Backdrop that appears when sidebar is open */
+.sidebar-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.36);z-index:1200;opacity:1}
+
+@media (min-width: 900px) {
+  /* keep overlay behavior on large screens as well */
+  .left-nav{width:260px}
+}
+
+.hamburger{position:fixed;left:12px;top:12px;z-index:1350;background:#f5e9da;border:none;padding:8px 10px;border-radius:6px;box-shadow:0 6px 18px rgba(0,0,0,0.08);font-size:18px}
+.left-nav.closed{transform:translateX(-100%)}
+.left-nav.open{transform:translateX(0)}
+.left-nav .left-nav-top{display:flex;justify-content:flex-end}
+.left-nav .left-nav-close{background:none;border:none;font-size:18px}
 .top-bg {
-  width: 100vw;
+  width: 100%;
   background: #fff;
   border-bottom-left-radius: 32px;
   border-bottom-right-radius: 32px;
@@ -53,7 +87,7 @@ body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helveti
   position: absolute;
   top: 0;
   left: 0;
-  width: 100vw;
+  width: 100%;
   height: 120px;
   background: #f5e9da;
   z-index: 0;
@@ -131,6 +165,86 @@ body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helveti
   margin-top:24px;
 }
 
+/* Open Data section */
+.acheivments{padding:36px 16px;background:transparent}
+.acheivments-inner{max-width:1200px;margin:0 auto;text-align:center}
+.acheivments-title{font-size:1.6rem;color:#a07f57;margin:6px 0}
+.acheivments-sub{color:var(--muted);margin-bottom:18px}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.stat-card{background:#fff;border-radius:12px;padding:18px;border:6px solid rgba(160,127,87,0.06);box-shadow:0 8px 20px rgba(160,127,87,0.04);display:flex;flex-direction:column;align-items:center}
+.stat-icon{
+  width:60px;
+  height:60px;
+  border-radius:50%;
+  background:#efe9f1;
+  margin-bottom:8px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:1.6rem; /* fallback size for icons */
+  line-height:1;
+}
+.stat-label{color:#6a5162;font-weight:600;margin-bottom:6px}
+.stat-value{font-size:1.15rem;color:#8a5f2d;font-weight:700}
+
+@media (max-width: 900px){
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width: 500px){
+  .stats-grid{grid-template-columns:1fr}
+}
+
+/* Home hero styles — warmer layered gradients and card look */
+.home-hero{
+  padding:72px 16px;
+  /* Use a hero photo with a soft overlay so the top remains visually connected to the header
+     If you want to use the attached image, place it in public/assets with this filename
+     or change the URL below to match the file you added. */
+  background:
+    /* overlay gradient — start transparent at the very top to avoid harsh merge with header */
+    linear-gradient(180deg, rgba(255,255,255,0.0) 0%, rgba(255,246,233,0.45) 40%, rgba(242,227,198,0.85) 100%),
+    /* decorative soft spots */
+    radial-gradient(1200px 400px at 10% 10%, rgba(191,167,122,0.06), transparent 18%),
+    radial-gradient(900px 300px at 90% 70%, rgba(160,127,87,0.04), transparent 18%);
+  /* no background image — photo will be inline to avoid zoom/crop */
+}
+.home-inner{
+  max-width:980px;
+  margin:0 auto;
+  text-align:center;
+  background: rgba(255,255,255,0.92);
+  padding:28px;
+  border-radius:14px;
+  box-shadow:0 12px 30px rgba(30,20,10,0.06);
+}
+.home-title{font-size:2.1rem;color:#8d6843;margin:6px 0}
+.home-sub{color:var(--muted);margin-bottom:18px}
+.home-cta{display:flex;gap:12px;justify-content:center;margin:18px 0}
+.btn{
+  background:linear-gradient(180deg,var(--moe-green),#a98f60);
+  color:#fff;
+  padding:12px 18px;
+  border-radius:10px;
+  text-decoration:none;
+  font-weight:800;
+  box-shadow:0 8px 20px rgba(168,139,92,0.18);
+  transition:transform .12s ease,box-shadow .12s ease,opacity .12s ease;
+}
+.btn:hover{transform:translateY(-3px);box-shadow:0 16px 32px rgba(168,139,92,0.22)}
+.btn-light{background:#fff;border:1px solid rgba(160,127,87,0.12);color:#6a5162;padding:10px 16px;border-radius:10px;box-shadow:0 6px 14px rgba(0,0,0,0.04)}
+.home-note{color:var(--muted);margin-top:12px;font-size:0.95rem}
+
+/* Inline photo styles */
+.home-photo-wrap{display:flex;justify-content:center;margin:18px 0}
+.home-photo{max-width:100%;height:auto;border-radius:12px;box-shadow:0 12px 30px rgba(30,20,10,0.08);display:block}
+
+@media (min-width: 1000px) {
+  .home-photo{max-width:920px}
+}
+
+/* Ensure grid is centered visually and doesn't cause horizontal gaps */
+.cards-bg{display:flex;justify-content:center;width:100%}
+
 .member-card {
   background: #f5e9da;
   border-radius:12px;
@@ -151,6 +265,28 @@ body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helveti
   transform:translateY(-6px);
   box-shadow:0 14px 28px rgba(2,6,23,0.12);
 }
+
+/* Compact card: show only name and role centered; hide description until expanded */
+.member-card .card-body{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:110px}
+.member-card .member-desc{display:none}
+
+/* Expanded state: lift card slightly and reveal description */
+.member-card.expanded{transform:translateY(-12px);box-shadow:0 18px 36px rgba(2,6,23,0.14)}
+.member-card.expanded .member-desc{display:block;margin-top:12px}
+
+/* When expanded hide name and role and center the photo + description */
+.member-card .member-name,.member-card .member-role{transition:opacity .18s ease,transform .18s ease}
+.member-card.expanded .member-name,
+.member-card.expanded .member-role{
+  opacity:0;
+  transform:translateY(-6px);
+  height:0;
+  margin:0;
+  padding:0;
+  overflow:hidden;
+  pointer-events:none;
+}
+.member-card.expanded .card-body{align-items:center;justify-content:flex-start;padding-top:8px}
 .photo-wrap{
   width:120px;
   height:120px;
@@ -163,6 +299,7 @@ body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helveti
   border:4px solid rgba(0,0,0,0.04);
   margin-left:auto;
   margin-right:auto;
+  transition: transform .18s ease, width .18s ease, height .18s ease;
 }
 .photo-wrap img{
   width:100%;
@@ -170,6 +307,17 @@ body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helveti
   object-fit:cover;
   object-position:center; /* ensure image is centered within the frame */
   display:block;
+  transition: transform .18s ease;
+}
+
+/* When expanded, shrink and move the photo slightly up */
+.member-card.expanded .photo-wrap{
+  transform: translateY(-12px) scale(0.86);
+  width:96px;
+  height:96px;
+}
+.member-card.expanded .photo-wrap img{
+  transform: scale(0.98);
 }
 
 /* Per-image adjustments are applied via the `photoPosition` prop for specific members */
