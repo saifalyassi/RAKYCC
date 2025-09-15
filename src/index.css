@@ -38,10 +38,16 @@
   --header-bg:#f5e9da; /* solid beige for top */
   --muted:#7c6f5c;
 
+  /* Contact button adjustable variables (used by ContactAdjuster) */
+  --contact-translate-x: 38%;
+  --contact-translate-y: 1%;
+  --contact-scale: 0.67;
+  --contact-font-size: 20px;
 
 *{box-sizing:border-box}
 html,body,#root{height:100%}
-body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial; background:var(--bg); color:#4b3e2e; overflow-x:hidden}
+/* Use Tajawal for Arabic first, with Noto Sans Arabic as a robust fallback, then system UI for Latin */
+body{margin:0;font-family:'Tajawal','Noto Sans Arabic',Inter,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial; background:var(--bg); color:#4b3e2e; overflow-x:hidden;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 
 .app-root{min-height:100%;display:flex;flex-direction:column;align-items:center;padding:0}
 .left-nav{
@@ -110,23 +116,20 @@ body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helveti
   margin: 0 auto;
 }
 
-/* Modern header layout (full-bleed navbar) */
-.navbar{width:100%;display:flex;align-items:center;justify-content:space-between;padding:12px 20px;background:linear-gradient(to right, #0a2342, #8b7d6b, #f5f5dc);color:#fff;font-family:"Tajawal","Poppins",sans-serif;position:relative;z-index:10}
-.logo{display:flex;align-items:center;gap:12px}
-.logo img{height:40px}
-.logo span{font-weight:700}
-.center-nav{flex:1;display:flex;justify-content:center}
-.center-nav ul{display:flex;gap:2rem;align-items:center;margin:0;padding:0;list-style:none}
-.center-nav a{color:#fff;text-decoration:none;font-weight:600}
-.center-nav a:hover{text-decoration:underline}
-.btn-contact{background:#004aad;color:#fff;padding:0.5rem 1rem;border-radius:8px;text-decoration:none;font-weight:700;box-shadow:0 2px 6px rgba(0,0,0,0.2)}
+/* Navbar styles are unified later in the file under .app-root .navbar to ensure consistent layout across all pages */
 
-/* Remove any top/bottom gaps around navbar */
-.top-bg, .navbar, .site-header{margin:0;padding:0}
+/* Ensure navbar sticks to the very top with no gaps */
+body,html{margin:0;padding:0}
+.top-bg{position:relative;top:0;left:0}
+
+/* Navbar height variable and page offset so fixed navbar doesn't cover content */
+:root{--navbar-height:70px}
+.top-bg{padding-top:var(--navbar-height)}
 
 @media (max-width:900px){
   .center-nav{display:none}
   .logo span{display:none}
+  .btn-contact{padding:8px 10px}
 }
 
 /* Compact on small screens */
@@ -136,15 +139,7 @@ body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helveti
   .council-logo{width:56px;height:56px}
 }
 
-/* New navbar styles (user-provided look + enhancements) */
-.navbar{display:flex;justify-content:space-between;align-items:center;padding:12px 20px;background:linear-gradient(to right, #0a2342, #8b7d6b, #f5f5dc);color:#fff;font-family:"Tajawal","Poppins",sans-serif}
-.navbar .logo{display:flex;align-items:center;gap:12px}
-.navbar .logo img{height:40px;border-radius:6px}
-.navbar .logo span{font-weight:700}
-.primary-nav ul{display:flex;gap:12px;align-items:center;margin:0;padding:0;list-style:none}
-.primary-nav a{color:inherit;text-decoration:none;padding:8px 12px;border-radius:8px}
-.primary-nav a:hover{background:rgba(255,255,255,0.08)}
-.btn-contact{background:rgba(255,255,255,0.12);color:#fff;padding:8px 12px;border-radius:8px;text-decoration:none;font-weight:700}
+/* Navbar styles are unified below. This earlier block was removed to prevent conflicts. */
 
 @media (max-width:800px){
   .primary-nav{display:none}
@@ -156,7 +151,7 @@ body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helveti
 .center-nav ul{list-style:none;display:flex;gap:2rem;margin:0;padding:0}
 .center-nav a{color:#fff;text-decoration:none;font-weight:600}
 .center-nav a:hover{text-decoration:underline}
-.right-side{display:flex;align-items:center;justify-content:flex-end}
+.right-side{display:flex;align-items:center;justify-content:flex-end;gap:12px}
 
 @media (max-width:900px){
   .center-nav{display:none}
@@ -176,12 +171,14 @@ body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helveti
   margin: 0;
   color: #a08c6b;
   font-size: 2.1rem;
+  line-height: 1.12;
 }
 
 .header-text .lead {
   margin-top: 8px;
   color: var(--muted);
-  font-size: 1.1rem;
+  font-size: 1.05rem;
+  line-height: 1.5;
 }
 
 .council-logo {
@@ -267,8 +264,8 @@ body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helveti
   border-radius:14px;
   box-shadow:0 18px 48px rgba(6,12,30,0.45);
 }
-.home-title{font-size:2.1rem;color:#e8eefc;margin:6px 0}
-.home-sub{color:rgba(232,238,252,0.85);margin-bottom:18px}
+.home-title{font-size:2.1rem;color:#e8eefc;margin:6px 0;line-height:1.12}
+.home-sub{color:rgba(232,238,252,0.85);margin-bottom:18px;font-size:1.05rem;line-height:1.5}
 .home-cta{display:flex;gap:12px;justify-content:center;margin:18px 0}
 .btn{
   background:linear-gradient(180deg,#2b5aa6,#1f3f78);
@@ -435,14 +432,134 @@ html.home-mode { direction: rtl; }
 .app-root.home-mode .site-header{padding-top:18px;padding-bottom:18px}
 
 /* User-provided navbar refinements */
-.navbar{display:flex;justify-content:space-between;align-items:center;padding:1rem 2rem;background:linear-gradient(to right, #0a2342, #8b7d6b, #f5f5dc);color:#fff;font-family:"Tajawal","Poppins",sans-serif}
+.navbar{display:flex;justify-content:space-between;align-items:center;padding:0 2rem;height:70px;line-height:70px;background:linear-gradient(90deg,#0a2342,#2c3e50,#8b7d6b);color:#fff;font-family:"Tajawal","Poppins",sans-serif;box-shadow:0 2px 6px rgba(0,0,0,0.2)}
 .navbar .logo{display:flex;align-items:center;gap:10px;font-weight:bold;font-size:1.1rem}
 .navbar .logo img{height:40px}
 .primary-nav ul{list-style:none;display:flex;gap:2rem;margin:0;padding:0}
 .primary-nav a{color:#fff;text-decoration:none;font-weight:600}
 .primary-nav a:hover{text-decoration:underline}
-.btn-contact{background:#004aad;color:#fff;padding:0.5rem 1rem;border-radius:8px;text-decoration:none;font-weight:bold;box-shadow:0 2px 6px rgba(0,0,0,0.2);margin-left:auto}
+
+/* Additional navbar list/link rules requested */
+.navbar ul{display:flex;gap:2rem;margin:0;padding:0;align-items:center;list-style:none}
+.navbar a{color:#fff;font-family:"Tajawal","Poppins",sans-serif;font-size:1rem;font-weight:600;text-decoration:none}
+.navbar a:hover{color:#ffd700}
+.btn-contact{background:#004aad;color:#fff;padding:0.5rem 1rem;border-radius:8px;text-decoration:none;font-weight:bold;box-shadow:0 2px 6px rgba(0,0,0,0.2);margin-left:0;margin-top:0;align-self:center;display:inline-flex;align-items:center}
 .btn-contact:hover{background:#003377}
+
+/* Unified navbar override: make navbar identical across all pages */
+.app-root .navbar{
+  height:70px !important;
+  line-height:70px !important;
+  padding:0 2rem !important;
+  background: linear-gradient(90deg,#0a2342,#2c3e50,#8b7d6b) !important;
+  color: #fff !important;
+  font-family: "Tajawal","Poppins",sans-serif !important;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2) !important;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 1000 !important;
+}
+
+/* Layout: left / center / right containers */
+.app-root .navbar{direction:rtl}
+
+/* explicit layout to avoid page-specific differences */
+.app-root .navbar .left-side{order:0;flex:0 0 auto;display:flex;align-items:center;gap:12px;position:relative;z-index:101}
+.app-root .navbar .right-side{order:2;flex:0 0 auto;display:flex;align-items:center;justify-content:flex-end;gap:12px;position:relative;z-index:101}
+/* center-nav is absolutely centered so it's visually identical on all pages */
+.app-root .navbar .center-nav{order:1;position:absolute;left:50%;transform:translateX(-50%);display:flex;align-items:center;justify-content:center;pointer-events:auto}
+
+/* Ensure nav links are perfectly centered both horizontally and vertically */
+.app-root .navbar .center-nav ul{display:flex;gap:2rem;align-items:center;margin:0;padding:0;list-style:none}
+.app-root .navbar .center-nav a{color:#fff;font-size:1rem;font-weight:600;text-decoration:none}
+.app-root .navbar .center-nav a:hover{color:#ffd700}
+
+/* Ensure logo and text formatting */
+.app-root .navbar .logo img{height:40px}
+.app-root .navbar .logo span{font-weight:700;font-size:1.05rem}
+
+/* Ensure contact button consistent */
+.app-root .navbar .btn-contact{display:inline-flex;align-items:center;padding:0.5rem 1rem;border-radius:8px;background:#004aad;color:#fff;font-weight:700;text-decoration:none;box-shadow:0 2px 6px rgba(0,0,0,0.2);transform: translateX(var(--contact-translate-x)) translateY(var(--contact-translate-y)) scale(var(--contact-scale));font-size:var(--contact-font-size)}
+
+/* Floating toggle for ContactAdjuster tool */
+.contact-tool-toggle{
+  position:fixed;
+  right:16px;
+  bottom:16px;
+  z-index:1400;
+  background:#004aad;
+  color:#fff;
+  border:none;
+  padding:8px 12px;
+  border-radius:8px;
+  box-shadow:0 8px 24px rgba(0,0,0,0.12);
+  cursor:pointer;
+}
+
+/* Make the ContactAdjuster panel smaller on narrow screens */
+@media (max-width:600px){
+  .contact-tool-toggle{right:8px;bottom:8px;padding:6px 8px}
+  .contact-adjuster{right:8px;left:8px;top:64px}
+}
+
+/* Plan page enhanced visuals and animations */
+.plan-hero{background:linear-gradient(90deg,#0a2342 0%,#8b7d6b 100%);color:#fff;padding:64px 16px;border-radius:12px;margin-bottom:20px}
+.plan-hero-inner{max-width:1100px;margin:0 auto;text-align:center}
+.plan-hero h1{font-size:2.4rem;margin:0}
+.plan-hero .lead{opacity:0.95;margin-top:8px}
+
+.plan-content{max-width:1100px;margin:36px auto;display:flex;flex-direction:column;gap:28px}
+.plan-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+.plan-cards .card{background:#fff;padding:20px;border-radius:12px;box-shadow:0 12px 30px rgba(2,6,23,0.06);text-align:left}
+.card .card-icon{font-size:1.6rem;margin-bottom:8px}
+
+.plan-values{background:transparent;padding:0}
+.values-grid{display:flex;flex-wrap:wrap;gap:12px}
+.value{padding:8px 12px;border-radius:999px;font-weight:700}
+.v-emp{background:linear-gradient(90deg,#ffe7c6,#f5d7a9)}
+.v-inn{background:linear-gradient(90deg,#e0f3ff,#c7e7ff)}
+.v-trans{background:linear-gradient(90deg,#f0f0f0,#dcdcdc)}
+.v-collab{background:linear-gradient(90deg,#e9f7e9,#d8f0d8)}
+.v-sust{background:linear-gradient(90deg,#eaf7ee,#d7efd8)}
+
+.timeline{display:flex;flex-direction:column;gap:12px}
+.timeline-item{display:flex;gap:12px;align-items:flex-start}
+.timeline-index{width:44px;height:44px;border-radius:50%;background:#0a2342;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800}
+.timeline-body{background:#fff;padding:12px;border-radius:8px;box-shadow:0 8px 20px rgba(0,0,0,0.04);flex:1}
+
+.plan-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.plan-card.interactive{background:#fff;border-radius:12px;padding:18px;text-align:center;transition:transform .18s ease,box-shadow .18s ease;border:1px solid rgba(2,6,23,0.04)}
+.plan-card.interactive:hover{transform:translateY(-8px);box-shadow:0 22px 40px rgba(2,6,23,0.12)}
+.plan-card .plan-icon{font-size:2rem;margin-bottom:8px}
+
+.plan-callout{padding:20px;border-radius:12px}
+
+/* Scroll reveal */
+.plan-page .reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}
+.plan-page .reveal.in-view{opacity:1;transform:translateY(0)}
+
+@media (max-width:1000px){
+  .plan-grid{grid-template-columns:repeat(2,1fr)}
+  .plan-cards{grid-template-columns:1fr}
+}
+@media (max-width:600px){
+  .plan-grid{grid-template-columns:1fr}
+  .plan-hero{padding:28px 12px}
+  .plan-hero h1{font-size:1.6rem}
+}
+
+/* Maintain responsive behavior but keep visual parity */
+@media (max-width: 900px){
+  .app-root .navbar{padding:0 1rem}
+  .app-root .navbar .center-nav{display:none}
+  .app-root .navbar .logo span{display:none}
+}
+
+@media (max-width: 800px){
+  .app-root .navbar .btn-contact{display:none}
+}
 
 @media (max-width:800px){
   .primary-nav{display:none}
@@ -456,4 +573,124 @@ html.home-mode { direction: rtl; }
 
 /* Reduce contrast of the inner card so the photo reads against the navy background */
 .home-inner{ background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.02)); }
+
+/* Plan page styles: improved visual design */
+.plan-page{padding:0 16px 48px;margin-top:0;/* unify with homepage layered background */
+  background:
+    linear-gradient(180deg, rgba(6,18,50,0.0) 0%, rgba(6,18,50,0.45) 28%, rgba(10,24,48,0.85) 100%),
+    radial-gradient(1200px 400px at 10% 10%, rgba(24,34,63,0.06), transparent 18%),
+    radial-gradient(900px 300px at 90% 70%, rgba(16,28,52,0.04), transparent 18%);
+  color: #fff;
+}
+
+/* Hero connects directly under the fixed navbar */
+.plan-hero{
+  /* connect to navbar but add breathing room so top cards don't feel cramped */
+  margin-top: calc(var(--navbar-height) * -1);
+  padding-top: calc(var(--navbar-height) + 28px);
+  padding-bottom: 56px;
+  /* keep the same layered background but reduce inset shadow for a cleaner blend */
+  background:
+    linear-gradient(180deg, rgba(6,18,50,0.0) 0%, rgba(6,18,50,0.38) 28%, rgba(10,24,48,0.78) 100%),
+    radial-gradient(1200px 400px at 10% 10%, rgba(24,34,63,0.05), transparent 18%),
+    radial-gradient(900px 300px at 90% 70%, rgba(16,28,52,0.03), transparent 18%);
+  color: #fff;
+  box-shadow: none;
+}
+.plan-hero-inner{max-width:1100px;margin:0 auto;text-align:center}
+.plan-hero h1{font-size:2.4rem;margin:6px 0 6px;font-weight:800;line-height:1.05}
+.plan-hero .lead{font-size:1.02rem;max-width:920px;margin:0 auto;color:rgba(255,255,255,0.95);line-height:1.6}
+
+.plan-page .container{max-width:980px;margin:28px auto;padding:0 16px}
+
+/* Vision & Mission cards */
+.plan-cards{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}
+.plan-cards .card{display:flex;align-items:flex-start;gap:14px;padding:20px;border-radius:12px;background:linear-gradient(180deg, #ffffff, #fbfbfb);box-shadow:0 12px 30px rgba(7,22,36,0.06)}
+.card .card-icon{width:64px;height:64px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:30px;flex:0 0 64px}
+.card.vision .card-icon{background:linear-gradient(135deg,#e6f3ff,#cfe9ff);color:#083049}
+.card.mission .card-icon{background:linear-gradient(135deg,#fff6e6,#ffebcf);color:#6a4a08}
+
+/* Core values as colorful badges */
+.values-grid{display:flex;flex-wrap:wrap;gap:12px;margin-top:12px}
+.value-badge{padding:10px 14px;border-radius:999px;font-weight:800;color:#083049;background:#fff;box-shadow:0 8px 20px rgba(6,25,40,0.06);transition:transform .18s,box-shadow .18s}
+.value-badge:hover{transform:scale(1.06);box-shadow:0 18px 40px rgba(6,25,40,0.12)}
+.value-badge.blue{background:linear-gradient(135deg,#e6f3ff,#cfe9ff)}
+.value-badge.green{background:linear-gradient(135deg,#e9f8ef,#d8f2df)}
+.value-badge.gold{background:linear-gradient(135deg,#fff7e6,#fff0cf)}
+.value-badge.purple{background:linear-gradient(135deg,#f0e9ff,#e6deff)}
+
+/* Strategic goals timeline */
+.timeline{margin-top:12px;border-left:3px solid rgba(7,25,45,0.06);padding-left:18px}
+.timeline-item{position:relative;padding:12px 0 12px 18px;display:flex;gap:12px;align-items:flex-start}
+.timeline-index{position:absolute;left:-36px;top:8px;background:#fff;color:#083049;border-radius:999px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-weight:800;box-shadow:0 8px 20px rgba(7,25,45,0.06)}
+.timeline-body{background:#fff;padding:12px;border-radius:10px;box-shadow:0 10px 28px rgba(6,25,40,0.06);display:flex;align-items:center;gap:10px}
+.goal-icon{font-size:20px;flex:0 0 28px}
+
+/* Programs & initiatives grid */
+.plan-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px}
+.plan-card{background:#fff;border-radius:12px;padding:18px;box-shadow:0 12px 28px rgba(6,25,40,0.06);transition:transform .18s,box-shadow .18s}
+.plan-card .plan-icon{font-size:28px;background:rgba(7,25,45,0.04);width:56px;height:56px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px}
+.plan-card.interactive:hover{transform:translateY(-8px) scale(1.02);box-shadow:0 28px 60px rgba(6,25,40,0.12)}
+.plan-card p{color:#475b6b}
+.plan-card .learn-more{display:inline-block;margin-top:10px;color:#0a3a66;font-weight:700;text-decoration:none}
+
+/* Icon styling and interactive behavior (supports inline SVG and external SVG images) */
+.card .card-icon svg,
+.plan-card .plan-icon svg,
+.goal-icon svg,
+.card .card-icon img,
+.plan-card .plan-icon img,
+.goal-icon img {
+  display: block;
+  color: #0a2342;
+  transition: transform .18s ease, color .18s ease, opacity .18s ease, filter .18s ease;
+}
+
+/* Hover/interactive states – keep behavior identical for inline SVGs and external SVG images */
+.card .card-icon:hover svg,
+.plan-card:hover .plan-icon svg,
+.timeline-item:hover .goal-icon svg,
+.card .card-icon:hover img,
+.plan-card:hover .plan-icon img,
+.timeline-item:hover .goal-icon img {
+  transform: scale(1.06);
+  color: #1f4f78;
+  opacity: 0.98;
+}
+
+/* small accent when hovering the card */
+.plan-cards .card:hover{transform:translateY(-6px);box-shadow:0 20px 40px rgba(7,22,36,0.08)}
+
+
+/* Footer CTA */
+.plan-footer-cta{margin-top:28px;padding:28px;border-radius:12px;background:linear-gradient(180deg,#fff,#fbf7ef);text-align:center}
+.plan-footer-cta h2{font-size:1.3rem;margin:6px 0;color:#0a2342}
+.plan-footer-cta p{color:#354a5a;opacity:0.95}
+.cta-btn{display:inline-block;background:#0a2342;color:#fff;padding:10px 18px;border-radius:10px;text-decoration:none;font-weight:800}
+.cta-btn.secondary{background:#fff;color:#0a2342;border:2px solid rgba(10,35,66,0.06);margin-left:12px}
+
+/* Reveal animation helpers */
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}
+.reveal.in-view{opacity:1;transform:none}
+
+/* Responsive tweaks */
+@media (max-width: 1000px){
+  .plan-grid{grid-template-columns:repeat(2,1fr)}
+  .plan-cards{grid-template-columns:1fr}
+}
+@media (max-width: 600px){
+  .plan-grid{grid-template-columns:1fr}
+  .plan-hero{padding-top:calc(var(--navbar-height) * 0.9);padding-bottom:28px}
+  .plan-hero h1{font-size:1.5rem}
+  .timeline-index{left:-28px;width:28px;height:28px}
+}
+
+/* Base type scale for consistent typography */
+body,button,input,textarea{font-size:16px}
+h1{font-size:2.2rem}
+h2{font-size:1.4rem}
+h3{font-size:1.1rem}
+p{font-size:1rem;line-height:1.6}
+
+button, a, .btn, .cta-btn{font-family:'Tajawal','Noto Sans Arabic',Inter,system-ui}
 

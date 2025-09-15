@@ -3,14 +3,18 @@ import MemberCard from './components/MemberCard'
 import members from './data/members'
 import { useState } from 'react'
 import PhotoAdjuster from './components/PhotoAdjuster'
+import ContactAdjuster from './components/ContactAdjuster'
 import LeftNav from './components/LeftNav'
 import Achievements from './components/Achievements'
 import Home from './components/Home'
+import Plan from './components/Plan'
 
 export default function App() {
   const [adjustments, setAdjustments] = useState({})
 
   const showAdjuster = typeof window !== 'undefined' && window.location.search.includes('adjust=1')
+  const [showContactTool, setShowContactTool] = useState(() => (typeof window !== 'undefined' && window.location.search.includes('contactAdjust=1')))
+  const [contactAdjust, setContactAdjust] = useState({ x: 0, y: 0, scale: 100, fs: 14 })
   const [navOpen, setNavOpen] = useState(false)
   // default to 'home' when there is no hash so the site opens on the Home page
   const [page, setPage] = useState(() => (typeof window !== 'undefined' ? (window.location.hash.replace('#','') || 'home') : 'home'))
@@ -54,7 +58,10 @@ export default function App() {
       <div>
         <header className="navbar" role="banner">
           <div className="left-side">
-            <a href="#contact" className="btn-contact">تواصل معنا</a>
+            <div className="logo">
+              <img src="assets/Fedral Youth .png" alt="Federal Youth Authority" height="40" />
+              <span>RAKYC | مجلس رأس الخيمة للشباب</span>
+            </div>
           </div>
 
           <nav className="center-nav" role="navigation" aria-label="Main">
@@ -67,10 +74,7 @@ export default function App() {
           </nav>
 
           <div className="right-side">
-            <div className="logo">
-              <img src="assets/Fedral Youth .png" alt="Federal Youth Authority" height="40" />
-              <span>RAKYC | مجلس رأس الخيمة للشباب</span>
-            </div>
+            <a href="#contact" className="btn-contact">تواصل معنا</a>
           </div>
         </header>
       </div>
@@ -79,6 +83,8 @@ export default function App() {
           <Home />
         ) : normalizedPage === 'achievements' ? (
           <Achievements />
+        ) : normalizedPage === 'strategic-plan' ? (
+          <Plan />
         ) : (
           <div className="cards-bg">
             <section className="cards-grid">
@@ -92,6 +98,12 @@ export default function App() {
         {showAdjuster && (
           <PhotoAdjuster members={members} adjustments={adjustments} setAdjustments={setAdjustments} />
         )}
+
+        {showContactTool && (
+          <ContactAdjuster values={contactAdjust} onChange={setContactAdjust} />
+        )}
+        {/* Floating toggle so tool is reachable without querystring */}
+        <button className="contact-tool-toggle" onClick={()=>setShowContactTool(v=>!v)} aria-pressed={showContactTool}>{showContactTool ? 'Close contact tool' : 'Adjust contact'}</button>
       </main>
       <footer className="site-footer">© {new Date().getFullYear()} RAKYC Council</footer>
       </div>
