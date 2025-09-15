@@ -26,6 +26,20 @@ export default function App() {
   // normalize common aliases/typos to canonical page names
   const normalizedPage = currentPage === 'acheivments' ? 'achievements' : currentPage
 
+  // ensure document body receives the home-mode class so CSS can target the full viewport
+  React.useEffect(() => {
+    if (typeof document !== 'undefined') {
+      if (normalizedPage === 'home') {
+        document.body.classList.add('home-mode')
+      } else {
+        document.body.classList.remove('home-mode')
+      }
+    }
+    return () => {
+      if (typeof document !== 'undefined') document.body.classList.remove('home-mode')
+    }
+  }, [normalizedPage])
+
   return (
     <div className="app-root">
       <button className="hamburger" aria-label="Toggle menu" onClick={()=>setNavOpen(v=>!v)}>☰</button>
@@ -37,14 +51,26 @@ export default function App() {
       ]} />
   {navOpen && <div className="sidebar-backdrop" onClick={()=>setNavOpen(false)} />}
       <div className="content-with-sidebar">
-      <div className="top-bg">
-        <header className="site-header">
-          <div className="header-flex">
-            <div className="header-text">
-              <h1>RAKYC</h1>
-              <p className="lead">Meet the 10 members - click a card for more info</p>
+      <div>
+        <header className="navbar" role="banner">
+          <div className="left-side">
+            <a href="#contact" className="btn-contact">تواصل معنا</a>
+          </div>
+
+          <nav className="center-nav" role="navigation" aria-label="Main">
+            <ul>
+              <li><a href="#home">الرئيسية</a></li>
+              <li><a href="#members">الأعضاء</a></li>
+              <li><a href="#strategic-plan">الخطة</a></li>
+              <li><a href="#achievements">الإنجازات</a></li>
+            </ul>
+          </nav>
+
+          <div className="right-side">
+            <div className="logo">
+              <img src="assets/Fedral Youth .png" alt="Federal Youth Authority" height="40" />
+              <span>RAKYC | مجلس رأس الخيمة للشباب</span>
             </div>
-            <img src="assets/Fedral Youth .png" alt="Federal Youth Logo" className="council-logo" />
           </div>
         </header>
       </div>

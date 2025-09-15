@@ -27,6 +27,10 @@
 
 
  :root{
+
+/* Load official fonts for header */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Tajawal:wght@400;700&display=swap');
+
   --moe-green:#bfa77a;
   --moe-gold:#f2e3c6;
   --bg:#e2c9a5; /* darker beige for background */
@@ -74,15 +78,8 @@ body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helveti
 .left-nav.open{transform:translateX(0)}
 .left-nav .left-nav-top{display:flex;justify-content:flex-end}
 .left-nav .left-nav-close{background:none;border:none;font-size:18px}
-.top-bg {
-  width: 100%;
-  background: #fff;
-  border-bottom-left-radius: 32px;
-  border-bottom-right-radius: 32px;
-  box-shadow: 0 4px 24px rgba(124,111,92,0.08);
-  padding-bottom: 12px;
-}
-.site-header{text-align:center;margin:36px 0 12px 0}
+.top-bg { width:100%; }
+.site-header{text-align:center;margin:0}
 .header-bg-square {
   position: absolute;
   top: 0;
@@ -112,6 +109,64 @@ body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helveti
   max-width: 1800px;
   margin: 0 auto;
 }
+
+/* Modern header layout (full-bleed navbar) */
+.navbar{width:100%;display:flex;align-items:center;justify-content:space-between;padding:12px 20px;background:linear-gradient(to right, #0a2342, #8b7d6b, #f5f5dc);color:#fff;font-family:"Tajawal","Poppins",sans-serif;position:relative;z-index:10}
+.logo{display:flex;align-items:center;gap:12px}
+.logo img{height:40px}
+.logo span{font-weight:700}
+.center-nav{flex:1;display:flex;justify-content:center}
+.center-nav ul{display:flex;gap:2rem;align-items:center;margin:0;padding:0;list-style:none}
+.center-nav a{color:#fff;text-decoration:none;font-weight:600}
+.center-nav a:hover{text-decoration:underline}
+.btn-contact{background:#004aad;color:#fff;padding:0.5rem 1rem;border-radius:8px;text-decoration:none;font-weight:700;box-shadow:0 2px 6px rgba(0,0,0,0.2)}
+
+/* Remove any top/bottom gaps around navbar */
+.top-bg, .navbar, .site-header{margin:0;padding:0}
+
+@media (max-width:900px){
+  .center-nav{display:none}
+  .logo span{display:none}
+}
+
+/* Compact on small screens */
+@media (max-width:700px){
+  .main-nav{display:none}
+  .brand-text .lead{display:none}
+  .council-logo{width:56px;height:56px}
+}
+
+/* New navbar styles (user-provided look + enhancements) */
+.navbar{display:flex;justify-content:space-between;align-items:center;padding:12px 20px;background:linear-gradient(to right, #0a2342, #8b7d6b, #f5f5dc);color:#fff;font-family:"Tajawal","Poppins",sans-serif}
+.navbar .logo{display:flex;align-items:center;gap:12px}
+.navbar .logo img{height:40px;border-radius:6px}
+.navbar .logo span{font-weight:700}
+.primary-nav ul{display:flex;gap:12px;align-items:center;margin:0;padding:0;list-style:none}
+.primary-nav a{color:inherit;text-decoration:none;padding:8px 12px;border-radius:8px}
+.primary-nav a:hover{background:rgba(255,255,255,0.08)}
+.btn-contact{background:rgba(255,255,255,0.12);color:#fff;padding:8px 12px;border-radius:8px;text-decoration:none;font-weight:700}
+
+@media (max-width:800px){
+  .primary-nav{display:none}
+  .btn-contact{display:none}
+}
+
+/* Left / center / right header layout */
+.left-side{display:flex;align-items:center;gap:12px;justify-content:flex-start}
+.center-nav ul{list-style:none;display:flex;gap:2rem;margin:0;padding:0}
+.center-nav a{color:#fff;text-decoration:none;font-weight:600}
+.center-nav a:hover{text-decoration:underline}
+.right-side{display:flex;align-items:center;justify-content:flex-end}
+
+@media (max-width:900px){
+  .center-nav{display:none}
+  .left-side .logo span{display:none}
+}
+
+/* Ensure navbar adapts when home-mode is active (keep gradient but ensure text contrasts) */
+.app-root.home-mode .navbar{background:linear-gradient(to right, #0a2342, #8b7d6b, #f5f5dc)}
+.app-root.home-mode .primary-nav a{color:#fff}
+.app-root.home-mode .btn-contact{background:rgba(255,255,255,0.16);color:#fff}
 
 .header-text {
   text-align: left;
@@ -197,41 +252,36 @@ body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helveti
 /* Home hero styles — warmer layered gradients and card look */
 .home-hero{
   padding:72px 16px;
-  /* Use a hero photo with a soft overlay so the top remains visually connected to the header
-     If you want to use the attached image, place it in public/assets with this filename
-     or change the URL below to match the file you added. */
+  /* Navy/indigo themed overlay to match the night photo */
   background:
-    /* overlay gradient — start transparent at the very top to avoid harsh merge with header */
-    linear-gradient(180deg, rgba(255,255,255,0.0) 0%, rgba(255,246,233,0.45) 40%, rgba(242,227,198,0.85) 100%),
-    /* decorative soft spots */
-    radial-gradient(1200px 400px at 10% 10%, rgba(191,167,122,0.06), transparent 18%),
-    radial-gradient(900px 300px at 90% 70%, rgba(160,127,87,0.04), transparent 18%);
-  /* no background image — photo will be inline to avoid zoom/crop */
+    linear-gradient(180deg, rgba(6,18,50,0.0) 0%, rgba(6,18,50,0.45) 28%, rgba(10,24,48,0.85) 100%),
+    radial-gradient(1200px 400px at 10% 10%, rgba(24,34,63,0.06), transparent 18%),
+    radial-gradient(900px 300px at 90% 70%, rgba(16,28,52,0.04), transparent 18%);
 }
 .home-inner{
   max-width:980px;
   margin:0 auto;
   text-align:center;
-  background: rgba(255,255,255,0.92);
+  background: rgba(8,18,38,0.78); /* translucent dark card */
   padding:28px;
   border-radius:14px;
-  box-shadow:0 12px 30px rgba(30,20,10,0.06);
+  box-shadow:0 18px 48px rgba(6,12,30,0.45);
 }
-.home-title{font-size:2.1rem;color:#8d6843;margin:6px 0}
-.home-sub{color:var(--muted);margin-bottom:18px}
+.home-title{font-size:2.1rem;color:#e8eefc;margin:6px 0}
+.home-sub{color:rgba(232,238,252,0.85);margin-bottom:18px}
 .home-cta{display:flex;gap:12px;justify-content:center;margin:18px 0}
 .btn{
-  background:linear-gradient(180deg,var(--moe-green),#a98f60);
+  background:linear-gradient(180deg,#2b5aa6,#1f3f78);
   color:#fff;
   padding:12px 18px;
   border-radius:10px;
   text-decoration:none;
   font-weight:800;
-  box-shadow:0 8px 20px rgba(168,139,92,0.18);
+  box-shadow:0 10px 26px rgba(20,36,80,0.36);
   transition:transform .12s ease,box-shadow .12s ease,opacity .12s ease;
 }
-.btn:hover{transform:translateY(-3px);box-shadow:0 16px 32px rgba(168,139,92,0.22)}
-.btn-light{background:#fff;border:1px solid rgba(160,127,87,0.12);color:#6a5162;padding:10px 16px;border-radius:10px;box-shadow:0 6px 14px rgba(0,0,0,0.04)}
+.btn:hover{transform:translateY(-3px);box-shadow:0 18px 40px rgba(18,34,70,0.38)}
+.btn-light{background:transparent;border:1px solid rgba(232,238,252,0.12);color:rgba(232,238,252,0.9);padding:10px 16px;border-radius:10px}
 .home-note{color:var(--muted);margin-top:12px;font-size:0.95rem}
 
 /* Inline photo styles */
@@ -355,3 +405,55 @@ body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helveti
     margin: 18px 0 8px 0;
   }
 }
+
+/* Home-specific body styles (scoped to home-mode) - user-provided */
+body.home-mode {
+  font-family: "Tahoma", Arial, sans-serif;
+  line-height: 1.8;
+  margin: 0;
+  padding: 0;
+  direction: rtl;
+  background: linear-gradient(to bottom right, #0a2342, #8b7d6b, #f5f5dc);
+  color: #222;
+}
+html.home-mode { direction: rtl; }
+
+.app-root.home-mode { background: transparent; }
+.app-root.home-mode .top-bg { background: transparent; box-shadow:none }
+.app-root.home-mode .site-header { background: transparent }
+.app-root.home-mode .site-header .header-flex { background: transparent }
+.app-root.home-mode .header-text h1 { color: #f3f8ff }
+.app-root.home-mode .header-text .lead { color: rgba(243,248,255,0.9) }
+.app-root.home-mode .council-logo { filter:grayscale(100%) brightness(.95); opacity:.95 }
+
+/* When in home-mode, adapt the modern header styles for dark background */
+.app-root.home-mode .brand-text h1{color:#f3f8ff}
+.app-root.home-mode .brand-text .lead{color:rgba(243,248,255,0.85)}
+.app-root.home-mode .main-nav a{color:rgba(243,248,255,0.9)}
+.app-root.home-mode .main-nav a:hover{background:rgba(255,255,255,0.06)}
+.app-root.home-mode .top-bg{background:transparent}
+.app-root.home-mode .site-header{padding-top:18px;padding-bottom:18px}
+
+/* User-provided navbar refinements */
+.navbar{display:flex;justify-content:space-between;align-items:center;padding:1rem 2rem;background:linear-gradient(to right, #0a2342, #8b7d6b, #f5f5dc);color:#fff;font-family:"Tajawal","Poppins",sans-serif}
+.navbar .logo{display:flex;align-items:center;gap:10px;font-weight:bold;font-size:1.1rem}
+.navbar .logo img{height:40px}
+.primary-nav ul{list-style:none;display:flex;gap:2rem;margin:0;padding:0}
+.primary-nav a{color:#fff;text-decoration:none;font-weight:600}
+.primary-nav a:hover{text-decoration:underline}
+.btn-contact{background:#004aad;color:#fff;padding:0.5rem 1rem;border-radius:8px;text-decoration:none;font-weight:bold;box-shadow:0 2px 6px rgba(0,0,0,0.2);margin-left:auto}
+.btn-contact:hover{background:#003377}
+
+@media (max-width:800px){
+  .primary-nav{display:none}
+  .btn-contact{display:none}
+}
+
+/* Make the home-hero sit full-screen with transparent inner card so the navy background is visible edge-to-edge */
+.home-hero{ min-height:100vh; display:flex; align-items:center; justify-content:center; padding:48px 16px; background:transparent }
+.home-inner{ background: rgba(8,18,38,0.18); padding:28px; border-radius:14px; box-shadow:none; max-width:1100px; width:100% }
+.home-photo{ border-radius:12px; box-shadow:0 24px 80px rgba(0,0,0,0.6); max-width:100%; height:auto }
+
+/* Reduce contrast of the inner card so the photo reads against the navy background */
+.home-inner{ background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.02)); }
+
