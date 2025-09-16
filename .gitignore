@@ -1,4 +1,6 @@
-# dependencies
+node_modules/
+dist/
+.DS_Store# dependencies
 node_modules/
 
 # build output
