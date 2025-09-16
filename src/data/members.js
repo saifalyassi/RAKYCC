@@ -5,21 +5,21 @@ const members = [
     id: 1,
     name: 'إبراهيم الجيري',
     role: 'رئيس المجلس',
-  photo: 'assets/member 1 - chairman.jpg',
+  photo: '/RAKYCC/member 1 - chairman.jpg',
     description: 'Experienced leader with a passion for youth development and community engagement.'
   },
   {
     id: 2,
     name: 'فاطمة الشحي',
     role: 'نائب رئيس المجلس',
-  photo: 'assets/member 2 - vice president.jpg',
+  photo: '/RAKYCC/member 2 - vice president.jpg',
     description: 'Focused on educational initiatives and public outreach.'
   },
   {
     id: 3,
     name: 'فاطمة الشرهان',
     role: 'أمين السر',
-  photo: 'assets/member 3.jpg',
+  photo: '/RAKYCC/member 3.jpg',
   photoPosition: 'center 20%',
     description: 'Coordinates council activities and documentation.'
   },
@@ -27,7 +27,7 @@ const members = [
     id: 4,
     name: 'سيف الياسي',
     role: 'مسؤول البيانات والاحصاء',
-  photo: 'assets/member 4.jpg',
+  photo: '/RAKYCC/member 4.jpg',
   photoPosition: 'center 15%',
     description: 'Testt'
   },
@@ -35,7 +35,7 @@ const members = [
     id: 5,
     name: 'آمنة الشحي',
     role: 'مسؤول التخطيط والتطوير',
-  photo: 'assets/member 5.jpg',
+  photo: '/RAKYCC/member 5.jpg',
   photoPosition: 'center 20%',
     description: 'Organizes and oversees council events and activities.'
   },
@@ -43,7 +43,7 @@ const members = [
     id: 6,
     name: 'خالد البلوشي',
     role: 'مسؤول الإتصال والشراكة',
-  photo: 'assets/member 6.png',
+  photo: '/RAKYCC/member 6.png',
   photoPosition: 'center 12%',
     description: 'Handles media relations and council communications.'
   },
@@ -51,7 +51,7 @@ const members = [
     id: 7,
     name: 'مريم الشحي',
     role: 'مسؤول المبادرات والمشاريع',
-  photo: 'assets/member 7.jpg',
+  photo: '/RAKYCC/member 7.jpg',
   photoPosition: 'center 30%',
     description: 'Builds partnerships with local organizations.'
   },
@@ -59,7 +59,7 @@ const members = [
     id: 8,
     name: 'هزاع الشحي',
     role: 'المسؤول الإعلامي',
-  photo: 'assets/member 8.jpg',
+  photo: '/RAKYCC/member 8.jpg',
   photoPosition: 'center 15%',
     description: 'Represents youth interests and feedback.'
   },
@@ -67,7 +67,7 @@ const members = [
     id: 9,
     name: 'شذى المهيري',
     role: 'مسؤول المبادرات والمشاريع',
-  photo: 'assets/member 9.jpg',
+  photo: '/RAKYCC/member 9.jpg',
   photoPosition: 'center 15%',
     description: 'Maintains council website and digital presence.'
   },
@@ -75,7 +75,7 @@ const members = [
     id: 10,
     name: 'محمد بريم',
     role: 'مسؤول الدعم اللوجستي',
-  photo: 'assets/member 10.jpg',
+  photo: '/RAKYCC/member 10.jpg',
     description: 'Supports various council initiatives and projects.'
   }
 ]
