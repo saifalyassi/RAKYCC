@@ -19,7 +19,7 @@ export default function Achievements(){
   return (
     <section id="achievements" className="open-data">
       <div className="open-data-inner">
-        <h2 className="open-data-title">الإنـجازات</h2>
+        <h2 className="open-data-title">حــصـاد مجلس رأس الخيمة للشباب</h2>
         <p className="open-data-sub">فبراير - أغسطس 2025</p>
         <div className="stats-grid">
           {stats.map(s => (
