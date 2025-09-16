@@ -97,7 +97,7 @@ export default function Plan(){
             <p>انضم إلينا في رحلتنا لبناء مستقبل أفضل — هناك مكان لكل صوت وفكرة.</p>
             <div style={{marginTop:12}}>
               <a className="cta-btn" href="#contact">انضم إلينا</a>
-              <a className="cta-btn secondary" href="#contact" style={{marginLeft:12}}>تواصل معنا</a>
+              <a className="cta-btn secondary" href="#contact">تواصل معنا</a>
             </div>
           </div>
 

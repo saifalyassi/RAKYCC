@@ -9,6 +9,7 @@ import Achievements from './components/Achievements'
 import Home from './components/Home'
 import Plan from './components/Plan'
 import Events from './components/Events'
+import ContactForm from './components/ContactForm'
 
 export default function App() {
   const [adjustments, setAdjustments] = useState({})
@@ -48,7 +49,6 @@ export default function App() {
 
   return (
     <div className="app-root">
-      <button className="hamburger" aria-label="Toggle menu" onClick={()=>setNavOpen(v=>!v)}>☰</button>
       <LeftNav open={navOpen} onClose={()=>setNavOpen(false)} items={[
         { label: 'Home', href: '#home' , onClick: ()=> setNavOpen(false)},
         { label: 'Achievements', href: '#achievements', onClick: ()=> setNavOpen(false) },
@@ -90,6 +90,8 @@ export default function App() {
           <Plan />
         ) : normalizedPage === 'events' ? (
           <Events />
+        ) : normalizedPage === 'contact' ? (
+          <ContactForm />
         ) : (
           <div className="cards-bg">
             <section className="cards-grid">
@@ -112,8 +114,25 @@ export default function App() {
         <div className="contact-bottom">
           <button className="contact-bottom-toggle" onClick={()=>setShowContactBox(v=>!v)} aria-expanded={showContactBox} aria-controls="contact-popover">تواصل معنا</button>
           <div id="contact-popover" className={`contact-popover ${showContactBox ? 'open' : ''}`} role="dialog" aria-hidden={!showContactBox}>
-            <a className="contact-link whatsapp" href="https://chat.whatsapp.com/DzposFD8nmUJpkRbFrlzj6?mode=ems_copy_t" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">🔗 واتساب</a>
-            <a className="contact-link instagram" href="https://www.instagram.com/emiratesyouth" target="_blank" rel="noopener noreferrer" aria-label="Instagram">🔗 انستغرام</a>
+            <a className="contact-link whatsapp" href="https://chat.whatsapp.com/DzposFD8nmUJpkRbFrlzj6?mode=ems_copy_t" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+                <path d="M20.52 3.48A11.77 11.77 0 0012 0C5.373 0 .13 4.582.13 10.238c0 1.805.48 3.477 1.38 4.995L0 24l8.001-2.093a11.962 11.962 0 004.001.68c6.627 0 11.87-4.582 11.87-10.238 0-2.904-1.318-5.577-3.352-7.869z" fill="#25D366"/>
+              </svg>
+              واتساب
+            </a>
+            <a className="contact-link instagram" href="https://www.instagram.com/emiratesyouth" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+                <linearGradient id="g1" x1="0" x2="1">
+                  <stop offset="0" stopColor="#f58529"/>
+                  <stop offset="0.5" stopColor="#dd2a7b"/>
+                  <stop offset="1" stopColor="#8134af"/>
+                </linearGradient>
+                <path d="M7 2h10a5 5 0 015 5v10a5 5 0 01-5 5H7a5 5 0 01-5-5V7a5 5 0 015-5z" fill="url(#g1)"/>
+                <circle cx="12" cy="12" r="3" fill="#fff"/>
+              </svg>
+              انستغرام
+            </a>
+            <a className="contact-link message" href="#contact" onClick={()=>setShowContactBox(false)}>اترك رسالة</a>
           </div>
         </div>
       </main>

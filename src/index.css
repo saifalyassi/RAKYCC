@@ -142,7 +142,7 @@ body,html{margin:0;padding:0}
 .top-bg{position:relative;top:0;left:0}
 
 /* Navbar height variable and page offset so fixed navbar doesn't cover content */
-:root{--navbar-height:70px}
+:root{--navbar-height:0px}
 .top-bg{padding-top:var(--navbar-height)}
 
 @media (max-width:900px){
@@ -461,7 +461,15 @@ body.home-mode {
 html.home-mode { direction: rtl; }
 
 .app-root.home-mode { background: transparent; }
-.app-root.home-mode { padding-top: 0 }
+.app-root.home-mode { padding-top: var(--navbar-height); }
+
+/* small visual gap under the fixed navbar for all pages */
+/* larger gap under navbar for non-home pages to match home hero spacing */
+.app-root:not(.home-mode) main{margin-top:48px}
+
+@media (min-width:900px){
+  .app-root:not(.home-mode) main{margin-top:64px}
+}
 .app-root.home-mode .top-bg { background: transparent; box-shadow:none }
 .app-root.home-mode .site-header { background: transparent }
 .app-root.home-mode .site-header .header-flex { background: transparent }
@@ -492,7 +500,6 @@ html.home-mode { direction: rtl; }
 .btn-contact{background:#004aad;color:#fff;padding:0.5rem 1rem;border-radius:8px;text-decoration:none;font-weight:bold;box-shadow:0 2px 6px rgba(0,0,0,0.2);margin-left:0;margin-top:0;align-self:center;display:inline-flex;align-items:center}
 .btn-contact:hover{background:#003377}
 
-/* Unified navbar override: make navbar identical across all pages */
 .app-root .navbar{
   height:70px !important;
   line-height:70px !important;
@@ -523,6 +530,7 @@ html.home-mode { direction: rtl; }
 .app-root .navbar .center-nav a:hover{color:#ffd700}
 
 /* Ensure logo and text formatting */
+/* logo rules left intentionally in case LeftNav or other components reuse them */
 .app-root .navbar .logo img{height:40px}
 .app-root .navbar .logo span{font-weight:700;font-size:1.05rem}
 
@@ -537,6 +545,43 @@ html.home-mode { direction: rtl; }
 .contact-popover .contact-link{display:block;padding:8px 6px;color:#083049;text-decoration:none;font-weight:700}
 .contact-popover .contact-link.whatsapp{background:linear-gradient(90deg,#e6ffee,#d0fbe6);border-radius:8px;margin-bottom:6px}
 .contact-popover .contact-link.instagram{background:linear-gradient(90deg,#fff0f6,#ffe6f2);border-radius:8px}
+.contact-popover .contact-link.message{background:linear-gradient(90deg,#eef6ff,#e6f0ff);border-radius:8px;margin-top:6px}
+.contact-popover .contact-link svg{vertical-align:middle;margin-left:8px}
+
+.contact-page{max-width:720px;margin:28px auto;padding:18px;direction:rtl}
+.contact-form{display:flex;flex-direction:column;gap:12px}
+.contact-form input,.contact-form textarea{padding:10px;border-radius:10px;border:1px solid rgba(10,20,30,0.08);font-size:1rem;direction:rtl;text-align:right}
+.contact-form input::placeholder,.contact-form textarea::placeholder{direction:rtl;text-align:right}
+.contact-form label{font-weight:700;color:#083049;text-align:right;display:block}
+.contact-textarea{resize:none}
+.contact-actions{display:flex;gap:12px;align-items:center;justify-content:flex-end;width:100%}
+
+/* Force button and status alignment specifically within the contact page */
+.contact-page .contact-actions .btn{
+  margin-left: 0 !important;
+  margin-right: 12px !important;
+}
+
+.contact-status{margin-right:12px}
+.contact-status.ok{color:var(--success, #1a8c3b); font-weight:700}
+.contact-status.error{color:var(--danger, #c0392b); font-weight:700}
+
+/* RTL-specific overrides: align actions to visual right and swap margins */
+.contact-page[dir="rtl"] .contact-actions{
+  justify-content: flex-start; /* in RTL, 'flex-start' is visually right */
+}
+.contact-page[dir="rtl"] .contact-actions .btn{
+  margin-right: 0 !important;
+  margin-left: 12px !important;
+}
+.contact-page[dir="rtl"] .contact-status{margin-right:0;margin-left:12px}
+
+/* Robust: push the primary button to the visual right using logical margin
+   This works in both LTR and RTL (margin-inline-start becomes left or right).
+*/
+.contact-page .contact-actions .btn{
+  margin-inline-start: auto !important;
+}
 
 @media (max-width:600px){
   .contact-popover{left:16px;right:16px;transform:none}
@@ -648,8 +693,8 @@ html.home-mode { direction: rtl; }
 
 /* Hero connects directly under the fixed navbar */
 .plan-hero{
-  /* connect to navbar but add breathing room so top cards don't feel cramped */
-  margin-top: calc(var(--navbar-height) * -1);
+  /* keep a normal flow below the fixed navbar so there's visible gap */
+  margin-top: 0;
   padding-top: calc(var(--navbar-height) + 28px);
   padding-bottom: 56px;
   /* keep the same layered background but reduce inset shadow for a cleaner blend */
