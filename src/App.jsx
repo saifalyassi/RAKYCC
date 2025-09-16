@@ -8,12 +8,14 @@ import LeftNav from './components/LeftNav'
 import Achievements from './components/Achievements'
 import Home from './components/Home'
 import Plan from './components/Plan'
+import Events from './components/Events'
 
 export default function App() {
   const [adjustments, setAdjustments] = useState({})
 
   const showAdjuster = typeof window !== 'undefined' && window.location.search.includes('adjust=1')
   const [showContactTool, setShowContactTool] = useState(() => (typeof window !== 'undefined' && window.location.search.includes('contactAdjust=1')))
+  const [showContactBox, setShowContactBox] = useState(false)
   const [contactAdjust, setContactAdjust] = useState({ x: 0, y: 0, scale: 100, fs: 14 })
   const [navOpen, setNavOpen] = useState(false)
   // default to 'home' when there is no hash so the site opens on the Home page
@@ -51,6 +53,7 @@ export default function App() {
         { label: 'Home', href: '#home' , onClick: ()=> setNavOpen(false)},
         { label: 'Achievements', href: '#achievements', onClick: ()=> setNavOpen(false) },
         { label: 'Members', href: '#members', onClick: ()=> setNavOpen(false) },
+        { label: 'Events', href: '#events', onClick: ()=> setNavOpen(false) },
         { label: 'Contact', href: '#contact', onClick: ()=> setNavOpen(false) }
       ]} />
   {navOpen && <div className="sidebar-backdrop" onClick={()=>setNavOpen(false)} />}
@@ -70,11 +73,11 @@ export default function App() {
               <li><a href="#members">الأعضاء</a></li>
               <li><a href="#strategic-plan">الخطة</a></li>
               <li><a href="#achievements">الإنجازات</a></li>
+              <li><a href="#events">الفعاليات</a></li>
             </ul>
           </nav>
 
           <div className="right-side">
-            <a href="#contact" className="btn-contact">تواصل معنا</a>
           </div>
         </header>
       </div>
@@ -85,6 +88,8 @@ export default function App() {
           <Achievements />
         ) : normalizedPage === 'strategic-plan' ? (
           <Plan />
+        ) : normalizedPage === 'events' ? (
+          <Events />
         ) : (
           <div className="cards-bg">
             <section className="cards-grid">
@@ -102,8 +107,15 @@ export default function App() {
         {showContactTool && (
           <ContactAdjuster values={contactAdjust} onChange={setContactAdjust} />
         )}
-        {/* Floating toggle so tool is reachable without querystring */}
-        <button className="contact-tool-toggle" onClick={()=>setShowContactTool(v=>!v)} aria-pressed={showContactTool}>{showContactTool ? 'Close contact tool' : 'Adjust contact'}</button>
+
+        {/* New bottom contact button + popover */}
+        <div className="contact-bottom">
+          <button className="contact-bottom-toggle" onClick={()=>setShowContactBox(v=>!v)} aria-expanded={showContactBox} aria-controls="contact-popover">تواصل معنا</button>
+          <div id="contact-popover" className={`contact-popover ${showContactBox ? 'open' : ''}`} role="dialog" aria-hidden={!showContactBox}>
+            <a className="contact-link whatsapp" href="https://chat.whatsapp.com/DzposFD8nmUJpkRbFrlzj6?mode=ems_copy_t" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">🔗 واتساب</a>
+            <a className="contact-link instagram" href="https://www.instagram.com/emiratesyouth" target="_blank" rel="noopener noreferrer" aria-label="Instagram">🔗 انستغرام</a>
+          </div>
+        </div>
       </main>
       <footer className="site-footer">© {new Date().getFullYear()} RAKYC Council</footer>
       </div>
