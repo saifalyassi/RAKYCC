@@ -3,21 +3,21 @@ import positions from './photoPositions.json'
 const members = [
   {
     id: 1,
-    name: 'إبراهيم الجيري',
+    name: 'إبراهيـم محمـد الجـيـري',
     role: 'رئيس المجلس',
   photo: '/RAKYCC/assets/member 1 - chairman.jpg',
     description: 'Experienced leader with a passion for youth development and community engagement.'
   },
   {
     id: 2,
-    name: 'فاطمة الشحي',
+    name: 'فاطمـة محمـد الشـحـي',
     role: 'نائب رئيس المجلس',
   photo: '/RAKYCC/assets/member 2 - vice president.jpg',
     description: 'Focused on educational initiatives and public outreach.'
   },
   {
     id: 3,
-    name: 'فاطمة الشرهان',
+    name: 'فاطمـة عدنان الشرهان',
     role: 'أمين السر',
   photo: '/RAKYCC/assets/member 3.jpg',
   photoPosition: 'center 20%',
@@ -25,7 +25,7 @@ const members = [
   },
   {
     id: 4,
-    name: 'سيف الياسي',
+    name: 'سـيـف خالد بوقفـل',
     role: 'مسؤول البيانات والاحصاء',
   photo: '/RAKYCC/assets/member 4.jpg',
   photoPosition: 'center 15%',
@@ -33,7 +33,7 @@ const members = [
   },
   {
     id: 5,
-    name: 'آمنة الشحي',
+    name: 'آمنـه إسماعيـل العوضـي',
     role: 'مسؤول التخطيط والتطوير',
   photo: '/RAKYCC/assets/member 5.jpg',
   photoPosition: 'center 20%',
@@ -41,7 +41,7 @@ const members = [
   },
   {
     id: 6,
-    name: 'خالد البلوشي',
+    name: 'خالد مراد البلوشـي',
     role: 'مسؤول الإتصال والشراكة',
   photo: '/RAKYCC/assets/member 6.png',
   photoPosition: 'center 12%',
@@ -49,7 +49,7 @@ const members = [
   },
   {
     id: 7,
-    name: 'مريم الشحي',
+    name: 'مـريـم مـحمـد الـشحـي',
     role: 'مسؤول المبادرات والمشاريع',
   photo: '/RAKYCC/assets/member 7.jpg',
   photoPosition: 'center 30%',
@@ -57,7 +57,7 @@ const members = [
   },
   {
     id: 8,
-    name: 'هزاع الشحي',
+    name: 'هـزاع عبدالله الـشحـي',
     role: 'المسؤول الإعلامي',
   photo: '/RAKYCC/assets/member 8.jpg',
   photoPosition: 'center 15%',
@@ -65,7 +65,7 @@ const members = [
   },
   {
     id: 9,
-    name: 'شذى المهيري',
+    name: 'شـذى عبدالله الـمهيـري',
     role: 'مسؤول المبادرات والمشاريع',
   photo: '/RAKYCC/assets/member 9.jpg',
   photoPosition: 'center 15%',
@@ -73,7 +73,7 @@ const members = [
   },
   {
     id: 10,
-    name: 'محمد بريم',
+    name: 'مـحمـد عـلـي بـريـم',
     role: 'مسؤول الدعم اللوجستي',
   photo: '/RAKYCC/assets/member 10.jpg',
     description: 'Supports various council initiatives and projects.'

@@ -10,6 +10,7 @@ import Home from './components/Home'
 import Plan from './components/Plan'
 import Events from './components/Events'
 import ContactForm from './components/ContactForm'
+import Highlights from './components/Highlights'
 
 export default function App() {
   const [adjustments, setAdjustments] = useState({})
@@ -74,6 +75,7 @@ export default function App() {
               <li><a href="#strategic-plan">الخطة</a></li>
               <li><a href="#achievements">الإنجازات</a></li>
               <li><a href="#events">الفعاليات</a></li>
+              <li><a href="#highlights">أبرز اللقاءات</a></li>
             </ul>
           </nav>
 
@@ -90,6 +92,8 @@ export default function App() {
           <Plan />
         ) : normalizedPage === 'events' ? (
           <Events />
+        ) : normalizedPage === 'highlights' ? (
+          <Highlights />
         ) : normalizedPage === 'contact' ? (
           <ContactForm />
         ) : (
