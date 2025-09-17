@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { fixTrailingPunctuation } from '../utils/text'
 
 export default function MemberCard({ name, role, photo, description, className = '', photoPosition }) {
   const [expanded, setExpanded] = useState(false)
@@ -31,7 +32,7 @@ export default function MemberCard({ name, role, photo, description, className =
       <div className="card-body">
         <h3 className="member-name">{name}</h3>
         <p className="member-role">{role}</p>
-        <p className="member-desc">{description}</p>
+  <p className="member-desc">{fixTrailingPunctuation(description)}</p>
       </div>
     </article>
   )

@@ -1,4 +1,5 @@
 import React from 'react'
+import { formatArabicDate, fixTrailingPunctuation } from '../utils/text'
 
 const EVENTS = [
   {
@@ -51,11 +52,17 @@ export default function Events(){
               <div className="event-body">
                 <h3 className="event-title">{e.title}</h3>
                 <div className="event-meta">
-                  <span className="event-date">📅 {e.date}</span>
+                  <span className="event-date">📅 {
+                    (() => {
+                      const d = formatArabicDate(e.date)
+                      if (typeof d === 'object') return `${d.day} ${d.month} ${d.year}`
+                      return e.date
+                    })()
+                  }</span>
                   <span className="event-attendees">👥 {e.attendees}</span>
                 </div>
                 {e.partners && <div className="event-partners">🤝 {e.partners}</div>}
-                <p className="event-notes">🎯 {e.notes}</p>
+                <p className="event-notes">🎯 {fixTrailingPunctuation(e.notes)}</p>
               </div>
             </article>
           ))}

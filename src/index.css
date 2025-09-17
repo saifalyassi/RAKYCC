@@ -303,6 +303,31 @@ body,html{margin:0;padding:0}
 .btn-light{background:transparent;border:1px solid rgba(232,238,252,0.12);color:rgba(232,238,252,0.9);padding:10px 16px;border-radius:10px}
 .home-note{color:var(--muted);margin-top:12px;font-size:0.95rem}
 
+/* Highlights hero centering */
+.highlights-hero{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:28px;
+  width:100%;
+}
+.highlights-hero .hero-slider{max-width:760px;display:flex;align-items:center;justify-content:center}
+.highlights-hero .hero-media{flex:0 0 380px;width:380px;height:320px;border-radius:20px;overflow:visible}
+.highlights-hero .hero-media img{width:100%;height:100%;object-fit:cover;display:block;border-radius:20px}
+.highlights-hero .hero-body{min-height:320px;display:flex;flex-direction:column;justify-content:space-between;align-items:flex-start;text-align:right;direction:rtl;padding:12px}
+.highlights-hero .hero-body h3{margin:0}
+.highlights-hero .hero-body .btn{margin-top:8px}
+
+/* position the small numeric counter just outside the right of the media and centered vertically */
+.media-counter{position:absolute;top:50%;right:calc(50% - 380px / 2 - 28px);transform:translateY(-50%);background:transparent;color:#083049;font-weight:700;padding:6px 8px;border-radius:10px;z-index:80}
+
+/* Placeholder visuals when photos are removed */
+.hero-placeholder{width:100%;height:100%;background:linear-gradient(180deg,rgba(10,18,34,0.06),rgba(124,111,92,0.04));border-radius:18px;display:block}
+.lb-placeholder{width:100%;height:420px;background:linear-gradient(180deg,rgba(10,18,34,0.04),rgba(124,111,92,0.02));border-radius:12px}
+
+/* Ensure highlights header is centered (fallback) */
+.cards-grid > header{display:block;text-align:center}
+
 /* Inline photo styles */
 .home-photo-wrap{display:flex;justify-content:center;margin:18px 0}
 .home-photo{max-width:100%;height:auto;border-radius:12px;box-shadow:0 12px 30px rgba(30,20,10,0.08);display:block}
@@ -402,10 +427,18 @@ body,html{margin:0;padding:0}
 
 /* Highlights gallery styles */
 .highlights-hero{display:flex;gap:18px;align-items:stretch;flex-wrap:wrap;margin:12px 0}
-.highlights-hero .hero-media{flex:0 0 46%;min-height:260px;border-radius:14px;overflow:hidden;position:relative;box-shadow:0 18px 48px rgba(4,12,30,0.28)}
-.highlights-hero .hero-media img{width:100%;height:100%;object-fit:cover;display:block;transform:scale(1);transition:transform .6s cubic-bezier(.2,.9,.2,1)}
+.highlights-hero .hero-media{flex:0 0 380px;width:380px;height:320px;border-radius:14px;overflow:visible;position:relative;box-shadow:0 18px 48px rgba(4,12,30,0.28)}
+.highlights-hero .hero-media img, .highlights-hero .hero-media video{width:100%;height:100%;object-fit:cover;display:block;transform:scale(1);transition:transform .6s cubic-bezier(.2,.9,.2,1)}
 .highlights-hero .hero-media:hover img{transform:scale(1.06)}
-.highlights-hero .hero-body{flex:1 1 48%;padding:18px;display:flex;flex-direction:column;justify-content:center}
+.highlights-hero .hero-body{flex:1 1 48%;padding:18px;display:flex;flex-direction:column;justify-content:space-between;direction:rtl;text-align:right;height:320px}
+
+/* ensure headline always starts at same vertical position */
+.highlights-hero .hero-body h3{margin-top:0;margin-bottom:8px}
+
+.highlights-hero .hero-body .hero-cta{align-self:flex-end}
+
+/* on-page media counter */
+.media-counter{position:absolute;top:12px;right:-28px;background:transparent;color:#0a2342;font-weight:900;padding:2px 6px;border-radius:6px;z-index:80;text-align:right}
 .highlights-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-top:18px}
 .highlight-card{background:var(--glass-surface);border-radius:12px;overflow:hidden;border:1px solid var(--glass-border);box-shadow:0 10px 30px rgba(4,12,30,0.06);cursor:pointer;transition:transform .18s ease,box-shadow .18s ease}
 .highlight-card:hover{transform:translateY(-6px);box-shadow:0 24px 48px rgba(4,12,30,0.12)}
@@ -419,12 +452,12 @@ body,html{margin:0;padding:0}
 
 /* Modal / lightbox */
 .lightbox-backdrop{position:fixed;inset:0;background:rgba(6,18,38,0.72);display:flex;align-items:center;justify-content:center;z-index:2200;padding:24px}
-.lightbox{max-width:980px;width:100%;background:linear-gradient(180deg,#fff,#fff);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 30px 80px rgba(4,12,30,0.6)}
+.lightbox{position:relative;max-width:980px;width:100%;background:linear-gradient(180deg,#fff,#fff);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 30px 80px rgba(4,12,30,0.6)}
 .lightbox .lb-top{display:flex;justify-content:flex-end;padding:12px}
-.lightbox .lb-body{display:flex;gap:18px;padding:18px}
+.lightbox .lb-body{display:flex;gap:18px;padding:18px;align-items:center}
 .lb-media{flex:0 0 46%;min-height:300px;overflow:hidden}
 .lb-media img{width:100%;height:100%;object-fit:cover;display:block}
-.lb-content{flex:1;padding:6px 12px;text-align:right}
+.lb-content{flex:1;padding:6px 12px;text-align:right;display:flex;flex-direction:column;justify-content:center}
 .lb-close{background:transparent;border:none;font-size:24px;padding:6px 10px;cursor:pointer}
 
 @media (max-width:900px){
@@ -450,6 +483,26 @@ body,html{margin:0;padding:0}
 .lb-action{background:rgba(255,255,255,0.04);border:1px solid var(--glass-border);padding:8px 10px;border-radius:8px;color:#fff;font-weight:700;cursor:pointer}
 .lb-action:hover{background:rgba(255,255,255,0.08)}
 
+/* small navy close and counter under it */
+.lb-top-right{display:flex;flex-direction:column;align-items:flex-end;gap:6px;padding-top:36px}
+.lb-close-x{position:absolute;top:12px;right:12px;background:none;border:none;color:#0a2342;font-size:18px;padding:4px 6px;cursor:pointer}
+.lb-top-right .lb-counter{background:#fff;padding:6px 10px;border-radius:8px;box-shadow:0 8px 20px rgba(0,0,0,0.12);font-weight:900;color:#0a2342}
+
+/* position the lightbox counter absolutely under the close icon */
+.lightbox .lb-counter{position:absolute;top:120px;right:20px;z-index:90}
+
+.media-counter{
+  position:absolute;
+  top:20px;
+  right:-365px;
+  background:transparent;
+  color:#0a2342;
+  font-weight:900;
+  padding:2px 6px;
+  border-radius:6px;
+  z-index:80;
+  text-align:right;
+}
 /* Video preview overlay for grid cards */
 .highlight-card{position:relative}
 .highlight-card.video .highlight-media{position:relative}
