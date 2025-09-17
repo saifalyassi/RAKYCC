@@ -1,104 +1,154 @@
-import React, { useEffect, useState } from 'react'
+
+import React, { useEffect, useState, useRef } from 'react'
+import data from '../data/highlights.json'
+import LazyImage from './LazyImage'
+import VideoPlayer from './VideoPlayer'
 
 export default function Highlights() {
-  const visits = [
-    {
-      id: 1,
-      title: 'رئيس الدولة يستقبل وفد من المؤسسة الاتحادية للشباب',
-      date: '13 مايو 2025',
-      location: 'أبوظبي',
-      summary: 'لقاء رسمي بحضور كبار المسؤولين لمناقشة سُبل دعم برامج الشباب الوطنية. تميز الحدث بتبادل الخبرات وعرض مبادرات المجلس الأخيرة.',
-      img: 'assets/visit-1.jpg' // placeholder — provide image and I will wire it
-    },
-    {
-      id: 2,
-      title: 'لقاء الشركاء المجتمعيين',
-      date: '01 يوليو 2025',
-      location: 'رأس الخيمة',
-      summary: 'جلسة عمل مع منظمات المجتمع المدني لبحث التعاون المشترك.',
-      img: 'assets/visit-2.jpg'
-    },
-    {
-      id: 3,
-      title: 'حملة التوعية الشبابية',
-      date: '20 يونيو 2025',
-      location: 'الشارقة',
-      summary: 'حفل افتتاح الحملة واستقبال وفود من المدارس والجامعات.',
-      img: 'assets/visit-3.jpg'
-    }
-  ]
-
-  // carousel state for featured image
+  const items = data
   const [index, setIndex] = useState(0)
-  const [modalOpen, setModalOpen] = useState(false)
+  const [lightbox, setLightbox] = useState({ open: false, item: null })
+  const heroTimer = useRef(null)
 
   useEffect(() => {
-    const id = setInterval(() => setIndex(i => (i + 1) % visits.length), 3000)
-    return () => clearInterval(id)
-  }, [])
+    heroTimer.current = setInterval(() => setIndex(i => (i + 1) % items.length), 3500)
+    return () => clearInterval(heroTimer.current)
+  }, [items.length])
+
+  useEffect(() => {
+    function onKey(e) {
+      if (lightbox.open) {
+        if (e.key === 'Escape') setLightbox({ open: false, item: null })
+        if (e.key === 'ArrowRight') openAdjacent(1)
+        if (e.key === 'ArrowLeft') openAdjacent(-1)
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [lightbox])
+
+  function openAdjacent(dir) {
+    const idx = items.findIndex(x => x.id === (lightbox.item?.id))
+    const next = (idx + dir + items.length) % items.length
+    setLightbox({ open: true, item: items[next] })
+  }
 
   return (
     <div className="cards-bg">
       <section className="cards-grid" style={{ maxWidth: 1100 }}>
         <header style={{ gridColumn: '1/-1', padding: '0 16px' }}>
           <h2 className="home-title">أبرز اللقاءات</h2>
-          <p className="home-sub">أحدث الزيارات واللقاءات الرسمية للمجلس — نشرة مُصغرة بتصميم عصري.</p>
+          <p className="home-sub">مجموعتنا المصورة — تصفح سريع، صور عالية الجودة، وعرض تفصيلي عند النقر.</p>
         </header>
 
-        {/* Featured hero card */}
-        <article className="card" style={{ flex: '1 1 100%', maxWidth: '100%', display: 'flex', gap: 18, alignItems: 'stretch' }}>
-          <div style={{ flex: '0 0 44%', minHeight: 220, overflow: 'hidden', borderRadius: 12 }}>
-            <div style={{ width: '100%', height: '100%', background: 'linear-gradient(180deg,#e6eef8,#cfe6ff)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <img src={visits[index].img} alt={visits[index].title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} onError={(e)=>{e.target.style.objectFit='contain'}} />
-            </div>
+        <div className="highlights-hero" style={{ gridColumn: '1/-1' }}>
+          <div className="hero-media" onClick={() => setLightbox({ open: true, item: items[index] })}>
+            {items[index].video ? (
+              <VideoPlayer src={items[index].video} poster={items[index].img} autoplay={false} muted={true} />
+            ) : (
+              <LazyImage src={items[index].img} alt={items[index].title} onError={(e) => { e.target.style.objectFit = 'contain' }} />
+            )}
           </div>
 
-          <div className="card-body" style={{ textAlign: 'right', padding: 20, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-            <h3 className="card-title" style={{ margin: 0, fontSize: '1.25rem' }}>{visits[index].title}</h3>
+          <div className="hero-body">
+            <h3 style={{ margin: 0, fontSize: '1.35rem' }}>{items[index].title}</h3>
             <div style={{ display: 'flex', gap: 12, marginTop: 8, alignItems: 'center', color: 'var(--muted)', fontWeight: 700 }}>
-              <span>{visits[index].date}</span>
+              <span>{items[index].date}</span>
               <span>—</span>
-              <span>{visits[index].location}</span>
+              <span>{items[index].location}</span>
             </div>
-            <p style={{ marginTop: 12, color: '#2d2320', lineHeight: 1.6 }}>{visits[index].summary}</p>
+            <p style={{ marginTop: 12, color: '#2d2320', lineHeight: 1.6 }}>{items[index].summary}</p>
             <div style={{ marginTop: 14 }}>
-              <button className="btn" onClick={() => setModalOpen(true)} style={{ textDecoration: 'none' }}>اقرأ المزيد</button>
+              <button className="btn" onClick={() => setLightbox({ open: true, item: items[index] })}>شاهد الصورة</button>
+              <button className="btn btn-light" style={{ marginLeft: 12 }} onClick={() => setIndex((index + 1) % items.length)}>التالي</button>
             </div>
-          </div>
-        </article>
-
-        {/* Photo boxes for the other two visits */}
-        {visits.slice(1).map(v => (
-          <article key={v.id} className="card" style={{ flex: '1 1 320px', minWidth: 280, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-            <div style={{ width: '100%', height: 160, overflow: 'hidden' }}>
-              <img src={v.img} alt={v.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} onError={(e)=>{e.target.style.objectFit='contain'}} />
-            </div>
-            <div className="card-body" style={{ textAlign: 'right' }}>
-              <h4 style={{ margin: '8px 0' }}>{v.title}</h4>
-              <small style={{ color: 'var(--muted)', fontWeight: 700 }}>{v.date} — {v.location}</small>
-              <p style={{ marginTop: 8 }}>{v.summary}</p>
-              <div style={{ marginTop: 8 }}>
-                <a className="btn btn-light" href="#">تفاصيل</a>
-              </div>
-            </div>
-          </article>
-        ))}
-      </section>
-
-      {/* Modal for full article */}
-      {modalOpen && (
-        <div role="dialog" aria-modal="true" className="contact-popover open" style={{ left: '50%', top: '10%', transform: 'translateX(-50%)', maxWidth: 880, width: '90%', padding: 24 }}>
-          <button onClick={() => setModalOpen(false)} style={{ float: 'left', background: 'transparent', border: 'none', fontSize: 18 }}>×</button>
-          <h3 style={{ marginTop: 0 }}>رئيس الدولة يستقبل وفد من المؤسسة الاتحادية للشباب</h3>
-          <small style={{ color: 'var(--muted)' }}>15 مايو 2025 — أبوظبي</small>
-          <div style={{ marginTop: 12, textAlign: 'right', direction: 'rtl' }}>
-            <p>اطلع صاحب السمو الشيخ محمد بن زايد آل نهيان رئيس الدولة "حفظه الله" اليوم على مبادرات المؤسسة الاتحادية للشباب وبرامجها النوعية ورؤيتها تجاه تمكين الشباب وتحقيق تطلعاتهم وتعزيز مشاركتهم في تنمية المجتمع.. وذلك خلال استقبال سموه وفد المؤسسة وأعضاء مجالس الشباب المحلية ومجلس الإمارات للشباب.</p>
-            <p>وأكد صاحب السمو الشيخ محمد بن زايد آل نهيان ـ خلال اللقاء الذي جرى في قصر البحر في أبوظبي ـ أن تمكين الشباب وتعزيز حضورهم في مختلف مجالات العمل الوطني يعد أولوية رئيسية في استراتيجية التنمية الشاملة للدولة.</p>
-            <p>وقال سموه إن دولة الإمارات تضع الشباب في جوهر رؤيتها للمستقبل وتراهن عليهم في مواصلة تحقيق طموحاتها التنموية وتقدمها وتعزيز مكتسباتها الوطنية.</p>
-            <p>حضر مجلس قصر البحر..سمو الشيخ خالد بن محمد بن زايد آل نهيان ولي عهد أبوظبي وسمو الشيخ حمدان بن زايد آل نهيان ممثل الحاكم في منطقة الظفرة وسمو الشيخ نهيان بن زايد آل نهيان رئيس مجلس أمناء مؤسسة زايد بن سلطان آل نهيان للأعمال الخيرية والإنسانية والفريق سمو الشيخ سيف بن زايد آل نهيان نائب رئيس مجلس الوزراء وزير الداخلية وسمو الشيخ حامد بن زايد آل نهيان وسمو الشيخ خالد بن زايد آل نهيان رئيس مجلس إدارة مؤسسة زايد العليا لأصحاب الهمم وسمو الشيخ حمدان بن محمد بن زايد آل نهيان نائب رئيس ديوان الرئاسة للشؤون الخاصة ومعالي الشيخ نهيان بن مبارك آل نهيان وزير التسامح والتعايش ومعالي الشيخ محمد بن حمد بن طحنون آل نهيان مستشار رئيس الدولة وعدد من الشيوخ والوزراء وكبار المسؤولين والضيوف.</p>
           </div>
         </div>
+
+        <div className="highlights-grid" style={{ gridColumn: '1/-1' }}>
+          {items.map((it, idx) => (
+            <div
+              key={it.id}
+              className={`highlight-card ${it.video ? 'video' : ''}`}
+              onClick={() => setLightbox({ open: true, item: it })}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => { if (e.key === 'Enter') setLightbox({ open: true, item: it }) }}
+            >
+              <div className="highlight-media">
+                {it.video ? (
+                  <VideoPlayer src={it.video} poster={it.img} hoverPreview={true} controls={false} muted={true} />
+                ) : (
+                  <LazyImage src={it.img} alt={it.title} onError={(e) => { e.target.style.objectFit = 'contain' }} />
+                )}
+                {it.video && <div className="preview-badge">فيديو</div>}
+              </div>
+              <div className="highlight-info">
+                <div className="highlight-caption">{it.caption}</div>
+                <div className="highlight-title">{it.title}</div>
+                <div className="highlight-meta">{it.date} — {it.location}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {lightbox.open && (
+        <Lightbox
+          item={lightbox.item}
+          items={items}
+          onClose={() => setLightbox({ open: false, item: null })}
+          openAdjacent={openAdjacent}
+        />
       )}
+    </div>
+  )
+}
+
+function Lightbox({ item, items, onClose, openAdjacent }) {
+  const backdropRef = useRef(null)
+  const closeButtonRef = useRef(null)
+  const idx = items.findIndex(x => x.id === item.id)
+
+  useEffect(() => {
+    const previous = document.activeElement
+    // focus the close button for keyboard users
+    closeButtonRef.current?.focus()
+    return () => previous?.focus()
+  }, [])
+
+  return (
+    <div className="lightbox-backdrop" ref={backdropRef} onClick={onClose} role="presentation">
+      <div className="lightbox" onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" aria-label={item.title}>
+        <div className="lb-top">
+          <div className="lb-toolbar">
+            <div className="lb-counter">{idx + 1} / {items.length}</div>
+          </div>
+          <div>
+            <a className="lb-action" href={item.video || item.img} download target="_blank" rel="noreferrer">تحميل</a>
+            <button ref={closeButtonRef} className="lb-action" style={{ marginLeft: 8 }} onClick={onClose} aria-label="Close">إغلاق</button>
+          </div>
+        </div>
+        <div className="lb-body">
+          <div className="lb-media">
+            {item.video ? (
+              <VideoPlayer src={item.video} poster={item.img} controls autoplay={false} muted={false} />
+            ) : (
+              <LazyImage src={item.img} alt={item.title} />
+            )}
+          </div>
+          <div className="lb-content">
+            <h3 style={{ marginTop: 0 }}>{item.title}</h3>
+            <small style={{ color: 'var(--muted)' }}>{item.date} — {item.location}</small>
+            <p style={{ marginTop: 12, lineHeight: 1.6 }}>{item.summary}</p>
+            <div style={{ marginTop: 6, color: 'var(--muted)' }}>{item.caption}</div>
+            <div style={{ marginTop: 14 }}>
+              <button className="btn" onClick={() => openAdjacent(-1)} style={{ marginRight: 8 }}>السابق</button>
+              <button className="btn" onClick={() => openAdjacent(1)}>التالي</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }

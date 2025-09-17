@@ -398,9 +398,62 @@ body,html{margin:0;padding:0}
   object-fit:cover;
   object-position:center; /* ensure image is centered within the frame */
   display:block;
-  border-radius:12px;
-  transition: transform .18s ease;
 }
+
+/* Highlights gallery styles */
+.highlights-hero{display:flex;gap:18px;align-items:stretch;flex-wrap:wrap;margin:12px 0}
+.highlights-hero .hero-media{flex:0 0 46%;min-height:260px;border-radius:14px;overflow:hidden;position:relative;box-shadow:0 18px 48px rgba(4,12,30,0.28)}
+.highlights-hero .hero-media img{width:100%;height:100%;object-fit:cover;display:block;transform:scale(1);transition:transform .6s cubic-bezier(.2,.9,.2,1)}
+.highlights-hero .hero-media:hover img{transform:scale(1.06)}
+.highlights-hero .hero-body{flex:1 1 48%;padding:18px;display:flex;flex-direction:column;justify-content:center}
+.highlights-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-top:18px}
+.highlight-card{background:var(--glass-surface);border-radius:12px;overflow:hidden;border:1px solid var(--glass-border);box-shadow:0 10px 30px rgba(4,12,30,0.06);cursor:pointer;transition:transform .18s ease,box-shadow .18s ease}
+.highlight-card:hover{transform:translateY(-6px);box-shadow:0 24px 48px rgba(4,12,30,0.12)}
+.highlight-media{height:160px;overflow:hidden}
+.highlight-media img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s ease}
+.highlight-card:hover .highlight-media img{transform:scale(1.06)}
+.highlight-info{padding:12px;text-align:right}
+.highlight-caption{font-size:0.95rem;color:var(--muted);font-weight:700}
+.highlight-title{margin:6px 0;font-weight:800}
+.highlight-meta{font-size:0.85rem;color:#3a2f25}
+
+/* Modal / lightbox */
+.lightbox-backdrop{position:fixed;inset:0;background:rgba(6,18,38,0.72);display:flex;align-items:center;justify-content:center;z-index:2200;padding:24px}
+.lightbox{max-width:980px;width:100%;background:linear-gradient(180deg,#fff,#fff);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 30px 80px rgba(4,12,30,0.6)}
+.lightbox .lb-top{display:flex;justify-content:flex-end;padding:12px}
+.lightbox .lb-body{display:flex;gap:18px;padding:18px}
+.lb-media{flex:0 0 46%;min-height:300px;overflow:hidden}
+.lb-media img{width:100%;height:100%;object-fit:cover;display:block}
+.lb-content{flex:1;padding:6px 12px;text-align:right}
+.lb-close{background:transparent;border:none;font-size:24px;padding:6px 10px;cursor:pointer}
+
+@media (max-width:900px){
+  .highlights-hero{flex-direction:column}
+  .highlights-hero .hero-media{flex-basis:100%}
+  .highlights-hero .hero-body{flex-basis:100%}
+  .lb-body{flex-direction:column}
+  .lb-media{min-height:200px}
+}
+
+/* Lazy image styles: start blurred and fade to sharp when loaded */
+.lazy-img{width:100%;height:100%;display:block;object-fit:cover;filter:blur(12px) saturate(.95);transform:scale(1.02);transition:filter .45s ease,transform .45s ease,opacity .3s ease}
+.lazy-img.loaded{filter:blur(0) saturate(1);transform:scale(1);opacity:1}
+.lazy-img.loading{opacity:.98}
+
+/* subtle shimmer for placeholders (small performance cost) */
+.lazy-img.loading{background:linear-gradient(90deg,rgba(255,255,255,0.02) 0%, rgba(255,255,255,0.06) 50%, rgba(255,255,255,0.02) 100%)}
+
+/* Lightbox toolbar and controls */
+.lightbox .lb-top{display:flex;justify-content:space-between;align-items:center;padding:8px 12px}
+.lb-toolbar{display:flex;gap:8px;align-items:center}
+.lb-counter{font-weight:700;color:var(--muted)}
+.lb-action{background:rgba(255,255,255,0.04);border:1px solid var(--glass-border);padding:8px 10px;border-radius:8px;color:#fff;font-weight:700;cursor:pointer}
+.lb-action:hover{background:rgba(255,255,255,0.08)}
+
+/* Video preview overlay for grid cards */
+.highlight-card{position:relative}
+.highlight-card.video .highlight-media{position:relative}
+.highlight-card.video .preview-badge{position:absolute;left:8px;top:8px;background:rgba(0,0,0,0.48);color:#fff;padding:6px 8px;border-radius:8px;font-weight:800;font-size:0.85rem}
 
 /* When expanded, shrink and move the photo slightly up */
 .member-card.expanded .photo-wrap{
