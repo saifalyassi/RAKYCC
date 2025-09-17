@@ -456,7 +456,7 @@ body,html{margin:0;padding:0}
 .lightbox .lb-top{display:flex;justify-content:flex-end;padding:12px}
 .lightbox .lb-body{display:flex;gap:18px;padding:18px;align-items:center}
 .lb-media{flex:0 0 46%;min-height:300px;overflow:hidden}
-.lb-media{flex:0 0 46%;min-height:300px;overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center;padding:24px}
+.lb-media{flex:0 0 46%;min-height:300px;overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center;padding:18px;transform:translateY(-30px)}
 .lb-media::before{content:'';position:absolute;inset:12px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.9),rgba(255,255,255,0.86));box-shadow:inset 0 1px 0 rgba(255,255,255,0.6);pointer-events:none}
 .lb-media img{width:100%;height:100%;object-fit:cover;display:block;border-radius:8px;position:relative;z-index:2}
 .lb-content{flex:1;padding:6px 12px;text-align:right;display:flex;flex-direction:column;justify-content:center}
@@ -494,9 +494,13 @@ body,html{margin:0;padding:0}
 .lightbox .lb-counter{position:absolute;top:65px;right:20px;z-index:90}
 
 /* gallery controls inside lightbox media */
-.lb-gallery-controls{position:absolute;left:20%;top:90%;transform:translate(-50%,-50%);display:flex;align-items:center;gap:12px;z-index:95}
-.lb-gallery-controls .lb-action{background:rgba(255,255,255,0.9);color:#083049;border:none;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:800}
-.lb-gallery-counter{background:rgba(255,255,255,0.95);padding:6px 10px;border-radius:999px;font-weight:800;color:#083049}
+/* gallery arrows remain overlayed on the image, but counter moved to content pane */
+.lb-gallery-controls{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);display:flex;align-items:center;gap:12px;z-index:95}
+.lb-gallery-controls .lb-action{background:rgba(255,255,255,0.92);color:#083049;border:none;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:800;box-shadow:0 6px 18px rgba(4,12,30,0.08)}
+.lb-gallery-counter{display:none}
+
+/* counter inside the right content pane */
+.lb-content .lb-gallery-counter{position:absolute;top:12px;right:12px;background:#fff;padding:6px 10px;border-radius:999px;font-weight:800;color:#083049;box-shadow:0 8px 20px rgba(0,0,0,0.12);z-index:96}
 
 .media-counter{
   position:absolute;

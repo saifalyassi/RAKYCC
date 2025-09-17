@@ -156,20 +156,23 @@ function Lightbox({ item, items, onClose, openAdjacent }) {
           <div className="lb-media">
             {/* show gallery image if available, otherwise fallback to item.img */}
             {item.gallery && item.gallery.length ? (
-              <img src={item.gallery[galleryIndex]} alt={item.title} />
+              <img src={import.meta.env.BASE_URL + item.gallery[galleryIndex]} alt={item.title} />
             ) : (
-              <div className="lb-placeholder" />
+              item.img ? <img src={import.meta.env.BASE_URL + item.img} alt={item.title} /> : <div className="lb-placeholder" />
             )}
             {/* gallery arrows inside lightbox (only for gallery) */}
             {item.gallery && item.gallery.length > 1 && (
               <div className="lb-gallery-controls">
                 <button className="lb-action" onClick={(e) => { e.stopPropagation(); setGalleryIndex((i) => (i === 0 ? item.gallery.length - 1 : i - 1)) }} aria-label="السابق">❮</button>
-                <span className="lb-gallery-counter">{galleryIndex + 1} / {item.gallery.length}</span>
                 <button className="lb-action" onClick={(e) => { e.stopPropagation(); setGalleryIndex((i) => (i + 1) % item.gallery.length) }} aria-label="التالي">❯</button>
               </div>
             )}
           </div>
-          <div className="lb-content" style={{ padding: '6px 12px', textAlign: 'right', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+          <div className="lb-content" style={{ padding: '6px 12px', textAlign: 'right', display: 'flex', flexDirection: 'column', justifyContent: 'center', position: 'relative' }}>
+            {/* gallery counter moved out of the image overlay and into the content pane */}
+            {item.gallery && item.gallery.length > 1 && (
+              <div className="lb-gallery-counter">{galleryIndex + 1} / {item.gallery.length}</div>
+            )}
             <h3 style={{ marginTop: 0 }}>{item.title}</h3>
             <small style={{ color: 'var(--muted)' }}>{item.location} — {item.date}</small>
             <p style={{ marginTop: 12, lineHeight: 1.6 }}>{item.summary}</p>
