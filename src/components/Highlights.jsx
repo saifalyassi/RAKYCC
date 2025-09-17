@@ -131,12 +131,15 @@ export default function Highlights() {
 function Lightbox({ item, items, onClose, openAdjacent }) {
   const backdropRef = useRef(null)
   const closeButtonRef = useRef(null)
+  const [galleryIndex, setGalleryIndex] = useState(0)
   const idx = items.findIndex(x => x.id === item.id)
 
   useEffect(() => {
     const previous = document.activeElement
     // focus the close button for keyboard users
     closeButtonRef.current?.focus()
+    // reset gallery index when item changes
+    setGalleryIndex(0)
     return () => previous?.focus()
   }, [])
 
@@ -151,9 +154,22 @@ function Lightbox({ item, items, onClose, openAdjacent }) {
         </div>
         <div className="lb-body">
           <div className="lb-media">
-            <div className="lb-placeholder" />
+            {/* show gallery image if available, otherwise fallback to item.img */}
+            {item.gallery && item.gallery.length ? (
+              <img src={item.gallery[galleryIndex]} alt={item.title} />
+            ) : (
+              <div className="lb-placeholder" />
+            )}
+            {/* gallery arrows inside lightbox (only for gallery) */}
+            {item.gallery && item.gallery.length > 1 && (
+              <div className="lb-gallery-controls">
+                <button className="lb-action" onClick={(e) => { e.stopPropagation(); setGalleryIndex((i) => (i === 0 ? item.gallery.length - 1 : i - 1)) }} aria-label="السابق">❮</button>
+                <span className="lb-gallery-counter">{galleryIndex + 1} / {item.gallery.length}</span>
+                <button className="lb-action" onClick={(e) => { e.stopPropagation(); setGalleryIndex((i) => (i + 1) % item.gallery.length) }} aria-label="التالي">❯</button>
+              </div>
+            )}
           </div>
-          <div className="lb-content">
+          <div className="lb-content" style={{ padding: '6px 12px', textAlign: 'right', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
             <h3 style={{ marginTop: 0 }}>{item.title}</h3>
             <small style={{ color: 'var(--muted)' }}>{item.location} — {item.date}</small>
             <p style={{ marginTop: 12, lineHeight: 1.6 }}>{item.summary}</p>
