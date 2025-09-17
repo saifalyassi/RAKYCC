@@ -8,30 +8,21 @@ export default function Highlights() {
   const items = data
   const [index, setIndex] = useState(0)
   const [lightbox, setLightbox] = useState({ open: false, item: null })
-  const heroTimer = useRef(null)
 
-  useEffect(() => {
-    heroTimer.current = setInterval(() => setIndex(i => (i + 1) % items.length), 3500)
-    return () => clearInterval(heroTimer.current)
-  }, [items.length])
+  // Removed auto-advance and keyboard navigation for main view
 
-  useEffect(() => {
-    function onKey(e) {
-      if (lightbox.open) {
-        if (e.key === 'Escape') setLightbox({ open: false, item: null })
-        if (e.key === 'ArrowRight') openAdjacent(1)
-        if (e.key === 'ArrowLeft') openAdjacent(-1)
-      }
+    function openAdjacent(dir) {
+      const idx = items.findIndex(x => x.id === (lightbox.item?.id))
+      const next = (idx + dir + items.length) % items.length
+      setLightbox({ open: true, item: items[next] })
     }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [lightbox])
 
-  function openAdjacent(dir) {
-    const idx = items.findIndex(x => x.id === (lightbox.item?.id))
-    const next = (idx + dir + items.length) % items.length
-    setLightbox({ open: true, item: items[next] })
-  }
+    function goLeft() {
+      setIndex((prev) => (prev === 0 ? items.length - 1 : prev - 1));
+    }
+    function goRight() {
+      setIndex((prev) => (prev === items.length - 1 ? 0 : prev + 1));
+    }
 
   return (
     <div className="cards-bg">
@@ -65,32 +56,7 @@ export default function Highlights() {
           </div>
         </div>
 
-        <div className="highlights-grid" style={{ gridColumn: '1/-1' }}>
-          {items.map((it, idx) => (
-            <div
-              key={it.id}
-              className={`highlight-card ${it.video ? 'video' : ''}`}
-              onClick={() => setLightbox({ open: true, item: it })}
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) => { if (e.key === 'Enter') setLightbox({ open: true, item: it }) }}
-            >
-              <div className="highlight-media">
-                {it.video ? (
-                  <VideoPlayer src={it.video} poster={it.img} hoverPreview={true} controls={false} muted={true} />
-                ) : (
-                  <LazyImage src={it.img} alt={it.title} onError={(e) => { e.target.style.objectFit = 'contain' }} />
-                )}
-                {it.video && <div className="preview-badge">فيديو</div>}
-              </div>
-              <div className="highlight-info">
-                <div className="highlight-caption">{it.caption}</div>
-                <div className="highlight-title">{it.title}</div>
-                <div className="highlight-meta">{it.date} — {it.location}</div>
-              </div>
-            </div>
-          ))}
-        </div>
+        {/* Removed highlights grid for manual navigation only */}
       </section>
 
       {lightbox.open && (
