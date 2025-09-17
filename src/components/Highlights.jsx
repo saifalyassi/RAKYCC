@@ -68,11 +68,11 @@ export default function Highlights() {
               transition: 'transform 0.5s cubic-bezier(.77,0,.18,1)',
               transform: `translateX(0)`
             }}>
-              <div className="hero-media" style={{width: 380, height: 320, minWidth: 380, minHeight: 320, maxWidth: 380, maxHeight: 320, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(255,255,255,0.08)', borderRadius: 20, boxShadow: '0 2px 16px rgba(0,0,0,0.07)'}} onClick={() => setLightbox({ open: true, item: items[index] })}>
+              <div className="hero-media" style={{width: 380, height: 320, minWidth: 380, minHeight: 320, maxWidth: 380, maxHeight: 320, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(255,255,255,0.08)', borderRadius: 20, boxShadow: '0 2px 16px rgba(0,0,0,0.07)', overflow: 'hidden'}} onClick={() => setLightbox({ open: true, item: items[index] })}>
                 {items[index].video ? (
                   <VideoPlayer src={items[index].video} poster={items[index].img} autoplay={false} muted={true} />
                 ) : (
-                  <LazyImage src={items[index].img} alt={items[index].title} onError={(e) => { e.target.style.objectFit = 'contain' }} />
+                  <img src={items[index].img} alt={items[index].title} style={{width: '100%', height: '100%', objectFit: 'cover', display: 'block'}} onError={e => { e.target.style.objectFit = 'contain'; }} />
                 )}
               </div>
               <div className="hero-body" style={{minHeight: 320, display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
