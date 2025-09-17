@@ -9,7 +9,7 @@ export default function Highlights() {
   const [index, setIndex] = useState(0)
   const [lightbox, setLightbox] = useState({ open: false, item: null })
 
-  // Removed auto-advance and keyboard navigation for main view
+  // No auto-advance or keyboard navigation for main view
 
     function openAdjacent(dir) {
       const idx = items.findIndex(x => x.id === (lightbox.item?.id))
@@ -32,28 +32,89 @@ export default function Highlights() {
           <p className="home-sub">مجموعتنا المصورة — تصفح سريع، صور عالية الجودة، وعرض تفصيلي عند النقر.</p>
         </header>
 
-        <div className="highlights-hero" style={{ gridColumn: '1/-1' }}>
-          <div className="hero-media" onClick={() => setLightbox({ open: true, item: items[index] })}>
-            {items[index].video ? (
-              <VideoPlayer src={items[index].video} poster={items[index].img} autoplay={false} muted={true} />
-            ) : (
-              <LazyImage src={items[index].img} alt={items[index].title} onError={(e) => { e.target.style.objectFit = 'contain' }} />
-            )}
-          </div>
-
-          <div className="hero-body">
-            <h3 style={{ margin: 0, fontSize: '1.35rem' }}>{items[index].title}</h3>
-            <div style={{ display: 'flex', gap: 12, marginTop: 8, alignItems: 'center', color: 'var(--muted)', fontWeight: 700 }}>
-              <span>{items[index].date}</span>
-              <span>—</span>
-              <span>{items[index].location}</span>
+  <div className="highlights-hero" style={{ gridColumn: '1/-1', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: 380, minWidth: 900 }}>
+          <button
+            className="arrow left"
+            onClick={goLeft}
+            style={{
+              position: 'absolute',
+              left: '-90px',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              zIndex: 20,
+              width: '48px',
+              height: '48px',
+              background: 'none',
+              border: 'none',
+              padding: 0,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer',
+              outline: 'none',
+            }}
+            aria-label="السابق"
+          >
+            <svg width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <polyline points="25,7 13,19 25,31" stroke="#111" strokeWidth="5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
+          <div className="hero-slider" style={{flex:1, display:'flex', justifyContent:'center', alignItems:'center', transition:'transform 0.5s cubic-bezier(.77,0,.18,1)', minWidth:0}}>
+            <div style={{
+              width: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              transition: 'transform 0.5s cubic-bezier(.77,0,.18,1)',
+              transform: `translateX(0)`
+            }}>
+              <div className="hero-media" style={{width: 380, height: 320, minWidth: 380, minHeight: 320, maxWidth: 380, maxHeight: 320, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(255,255,255,0.08)', borderRadius: 20, boxShadow: '0 2px 16px rgba(0,0,0,0.07)'}} onClick={() => setLightbox({ open: true, item: items[index] })}>
+                {items[index].video ? (
+                  <VideoPlayer src={items[index].video} poster={items[index].img} autoplay={false} muted={true} />
+                ) : (
+                  <LazyImage src={items[index].img} alt={items[index].title} onError={(e) => { e.target.style.objectFit = 'contain' }} />
+                )}
+              </div>
+              <div className="hero-body" style={{minHeight: 320, display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
+                <h3 style={{ margin: 0, fontSize: '1.35rem' }}>{items[index].title}</h3>
+                <div style={{ display: 'flex', gap: 12, marginTop: 8, alignItems: 'center', color: 'var(--muted)', fontWeight: 700 }}>
+                  <span>{items[index].date}</span>
+                  <span>—</span>
+                  <span>{items[index].location}</span>
+                </div>
+                <p style={{ marginTop: 12, color: '#2d2320', lineHeight: 1.6 }}>{items[index].summary}</p>
+                <div style={{ marginTop: 14 }}>
+                  <button className="btn" onClick={() => setLightbox({ open: true, item: items[index] })}>شاهد الصورة</button>
+                </div>
+              </div>
             </div>
-            <p style={{ marginTop: 12, color: '#2d2320', lineHeight: 1.6 }}>{items[index].summary}</p>
-            <div style={{ marginTop: 14 }}>
-              <button className="btn" onClick={() => setLightbox({ open: true, item: items[index] })}>شاهد الصورة</button>
-              <button className="btn btn-light" style={{ marginLeft: 12 }} onClick={() => setIndex((index + 1) % items.length)}>التالي</button>
-            </div>
           </div>
+          <button
+            className="arrow right"
+            onClick={goRight}
+            style={{
+              position: 'absolute',
+              right: '-90px',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              zIndex: 20,
+              width: '48px',
+              height: '48px',
+              background: 'none',
+              border: 'none',
+              padding: 0,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer',
+              outline: 'none',
+            }}
+            aria-label="التالي"
+          >
+            <svg width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <polyline points="13,7 25,19 13,31" stroke="#111" strokeWidth="5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
         </div>
 
         {/* Removed highlights grid for manual navigation only */}
