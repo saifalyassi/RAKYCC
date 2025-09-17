@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState, useRef } from 'react'
 import data from '../data/highlights.json'
 import LazyImage from './LazyImage'
@@ -7,6 +6,22 @@ export default function Highlights() {
   const items = data
   const [index, setIndex] = useState(0)
   const [lightbox, setLightbox] = useState({ open: false, item: null })
+
+  const heroVideoRef = useRef(null)
+  // Use native browser controls for video; no custom control state required
+  const [heroCurrentTime, setHeroCurrentTime] = useState(0)
+  const [heroDuration, setHeroDuration] = useState(0)
+
+  // No auto-advance or keyboard navigation for main view
+
+  // Toggle a root-level class when the lightbox opens so CSS can scope overlay fixes.
+  useEffect(() => {
+    try {
+      if (lightbox.open) document.documentElement.classList.add('lightbox-open')
+      else document.documentElement.classList.remove('lightbox-open')
+    } catch (e) {}
+    return () => { try { document.documentElement.classList.remove('lightbox-open') } catch (e) {} }
+  }, [lightbox.open])
 
   // No auto-advance or keyboard navigation for main view
 
@@ -26,7 +41,7 @@ export default function Highlights() {
   return (
     <div className="cards-bg">
       <section className="cards-grid" style={{ maxWidth: 1100 }}>
-        <header style={{ gridColumn: '1/-1', padding: '0 16px', textAlign: 'right', direction: 'rtl' }}>
+        <header className="highlights-header" style={{ gridColumn: '1/-1', padding: '0 16px', direction: 'rtl' }}>
           <h2 className="home-title">أبرز اللقاءات</h2>
           <p className="home-sub">مجموعتنا المصورة — تصفح سريع، صور عالية الجودة، وعرض تفصيلي عند النقر.</p>
         </header>
@@ -67,9 +82,21 @@ export default function Highlights() {
               transition: 'transform 0.5s cubic-bezier(.77,0,.18,1)',
               transform: `translateX(0)`
             }}>
-              <div className="hero-media" style={{width: 380, height: 320, minWidth: 380, minHeight: 320, maxWidth: 380, maxHeight: 320, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(255,255,255,0.08)', borderRadius: 20, boxShadow: '0 2px 16px rgba(0,0,0,0.07)', overflow: 'visible'}} onClick={() => setLightbox({ open: true, item: items[index] })}>
-                {/* show representative image if exists (gallery first image or img field) */}
-                {(items[index].gallery && items[index].gallery.length) || items[index].img ? (
+              <div className="hero-media" style={{width: 520, height: 360, minWidth: 520, minHeight: 360, maxWidth: 520, maxHeight: 360, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(255,255,255,0.08)', borderRadius: 20, boxShadow: '0 2px 16px rgba(0,0,0,0.07)', overflow: 'visible'}}>
+                {/* show video in hero if available, otherwise the representative image */}
+                {items[index].video ? (
+                  <div style={{ width: '100%', height: '100%', borderRadius: 20, overflow: 'hidden', position: 'relative' }}>
+                    <video
+                      ref={heroVideoRef}
+                      src={import.meta.env.BASE_URL + items[index].video}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                      playsInline
+                      controls
+                      onTimeUpdate={() => { const v = heroVideoRef.current; if (!v) return; setHeroCurrentTime(v.currentTime) }}
+                      onLoadedMetadata={() => { const v = heroVideoRef.current; if (!v) return; setHeroDuration(v.duration) }}
+                    />
+                  </div>
+                ) : ((items[index].gallery && items[index].gallery.length) || items[index].img) ? (
                   <img
                     src={import.meta.env.BASE_URL + (items[index].img || (items[index].gallery && items[index].gallery[0]))}
                     alt={items[index].title}
@@ -79,11 +106,11 @@ export default function Highlights() {
                 ) : (
                   <div className="hero-placeholder" aria-hidden />
                 )}
-                <div className="media-counter" aria-hidden style={{position: 'absolute'}}>{index + 1}/{items.length}</div>
+                {/* media counter removed per user request */}
               </div>
               <div className="hero-body" style={{minHeight: 320, display: 'flex', flexDirection: 'column', justifyContent: 'center', direction: 'rtl', textAlign: 'right', alignItems: 'flex-start'}}>
                 <h3 style={{ margin: 0, fontSize: '1.35rem' }}>{items[index].title}</h3>
-                <div style={{ display: 'flex', gap: 12, marginTop: 8, alignItems: 'center', color: 'var(--muted)', fontWeight: 700, direction: 'rtl', justifyContent: 'flex-start' }}>
+                <div className="highlight-meta" style={{ display: 'flex', gap: 12, marginTop: 8, alignItems: 'center', direction: 'rtl', justifyContent: 'flex-start' }}>
                   <span>{items[index].location}</span>
                   <span>—</span>
                   <span>{items[index].date}</span>
@@ -142,6 +169,11 @@ function Lightbox({ item, items, onClose, openAdjacent }) {
   const backdropRef = useRef(null)
   const closeButtonRef = useRef(null)
   const [galleryIndex, setGalleryIndex] = useState(0)
+  const videoRef = useRef(null)
+  const [currentTime, setCurrentTime] = useState(0)
+  const [duration, setDuration] = useState(0)
+  const [playing, setPlaying] = useState(false)
+  const [volume, setVolume] = useState(1)
   const idx = items.findIndex(x => x.id === item.id)
 
   useEffect(() => {
@@ -150,35 +182,90 @@ function Lightbox({ item, items, onClose, openAdjacent }) {
     closeButtonRef.current?.focus()
     // reset gallery index when item changes
     setGalleryIndex(0)
+    setPlaying(false)
+    setCurrentTime(0)
+    setDuration(0)
+    setVolume(1)
     return () => previous?.focus()
   }, [])
 
+  // keep the video time state in sync when showing the video
+  useEffect(() => {
+    const images = item.gallery ? item.gallery.length : 0
+    const isVideoIndex = item.video && galleryIndex === images
+    const v = videoRef.current
+    if (v) {
+      if (!isVideoIndex) {
+        try { v.pause() } catch (e) {}
+      }
+    }
+  }, [galleryIndex, item.video, item.gallery])
   return (
     <div className="lightbox-backdrop" ref={backdropRef} onClick={onClose} role="presentation">
-      <div className="lightbox" onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" aria-label={item.title}>
-          <div className="lb-media">
-            {/* show gallery image if available, otherwise fallback to item.img */}
-            {item.gallery && item.gallery.length ? (
-              <img src={import.meta.env.BASE_URL + item.gallery[galleryIndex]} alt={item.title} />
-            ) : (
-              item.img ? <img src={import.meta.env.BASE_URL + item.img} alt={item.title} /> : <div className="lb-placeholder" />
+      <div className={`lightbox lb-id-${item.id}`} onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" aria-label={item.title}>
+        <div className="lb-media">
+            {
+              /* Build a virtual gallery: images first, then video as last item if present */
+            }
+            {((item.gallery && item.gallery.length) || item.video) ? (
+              (() => {
+                const images = item.gallery ? item.gallery.slice() : []
+                const hasVideo = !!item.video
+                const total = images.length + (hasVideo ? 1 : 0)
+                const isVideoIndex = hasVideo && galleryIndex === images.length
+                    if (isVideoIndex) {
+                  return (
+                    <div style={{ position: 'relative' }}>
+                      <video
+                        ref={videoRef}
+                        src={import.meta.env.BASE_URL + item.video}
+                        controls
+                        style={{ width: '100%', maxHeight: 640, objectFit: 'contain', background: '#000' }}
+                        onTimeUpdate={() => { const v = videoRef.current; if (!v) return; setCurrentTime(v.currentTime) }}
+                        onLoadedMetadata={() => { const v = videoRef.current; if (!v) return; setDuration(v.duration) }}
+                      />
+                      
+                    </div>
+                  )
+                }
+                // Otherwise show the image at galleryIndex
+                const imageSrc = images[galleryIndex]
+                return imageSrc ? (
+                  <img src={import.meta.env.BASE_URL + imageSrc} alt={item.title} />
+                ) : (item.img ? <img src={import.meta.env.BASE_URL + item.img} alt={item.title} /> : <div className="lb-placeholder" />)
+              })()
+              ) : (
+                item.img ? <img src={import.meta.env.BASE_URL + item.img} alt={item.title} /> : <div className="lb-placeholder" />
             )}
-          </div>
+        </div>
           {/* place gallery controls and counter below the image (not overlay) */}
-          {item.gallery && item.gallery.length > 1 && (
+          {( (item.gallery && item.gallery.length) || item.video ) && (
             <div className="lb-media-footer">
               <div className="lb-gallery-controls">
-                <button className="lb-action" onClick={(e) => { e.stopPropagation(); setGalleryIndex((i) => (i === 0 ? item.gallery.length - 1 : i - 1)) }} aria-label="السابق">❮</button>
-                <button className="lb-action" onClick={(e) => { e.stopPropagation(); setGalleryIndex((i) => (i + 1) % item.gallery.length) }} aria-label="التالي">❯</button>
+                <button className="lb-action" onClick={(e) => {
+                  e.stopPropagation();
+                  const images = item.gallery ? item.gallery.length : 0
+                  const total = images + (item.video ? 1 : 0)
+                  setGalleryIndex((i) => (i === 0 ? total - 1 : i - 1))
+                }} aria-label="السابق">❮</button>
+                <div className="lb-gallery-counter">{galleryIndex + 1} / {(item.gallery ? item.gallery.length : 0) + (item.video ? 1 : 0)}</div>
+                <button className="lb-action" onClick={(e) => {
+                  e.stopPropagation();
+                  const images = item.gallery ? item.gallery.length : 0
+                  const total = images + (item.video ? 1 : 0)
+                  setGalleryIndex((i) => (i + 1) % total)
+                }} aria-label="التالي">❯</button>
               </div>
-              <div className="lb-gallery-counter">{galleryIndex + 1} / {item.gallery.length}</div>
             </div>
           )}
-          <div className="lb-content" style={{ padding: '6px 12px', textAlign: 'right', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+          
+          <div className="lb-content" style={{ padding: '6px 12px', textAlign: 'right', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}>
             <h3 style={{ marginTop: 0 }}>{item.title}</h3>
             <small style={{ color: 'var(--muted)' }}>{item.location} — {item.date}</small>
-            {/* show short summary in the listing area; use longDescription (or fullText) inside lightbox if available */}
-            <p style={{ marginTop: 12, lineHeight: 1.6 }}>{item.longDescription || item.fullText || item.summary}</p>
+            {/* lightbox-specific description (may be long) */}
+            <div className="lb-description" style={{ marginTop: 12 }}>
+              {item.lightboxDescription || item.longDescription || item.fullText || item.summary}
+            </div>
             <div style={{ marginTop: 6, color: 'var(--muted)' }}>{item.caption}</div>
             <div style={{ marginTop: 14 }}>
               <button className="btn" onClick={() => openAdjacent(-1)} style={{ marginRight: 8 }}>السابق</button>
@@ -188,5 +275,13 @@ function Lightbox({ item, items, onClose, openAdjacent }) {
       </div>
     </div>
   )
+}
+
+
+function formatTime(t) {
+  if (!t || isNaN(t) || !isFinite(t)) return '0:00'
+  const sec = Math.floor(t % 60).toString().padStart(2, '0')
+  const min = Math.floor(t / 60)
+  return `${min}:${sec}`
 }
 

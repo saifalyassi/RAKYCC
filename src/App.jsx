@@ -63,8 +63,10 @@ export default function App() {
         <header className="navbar" role="banner">
           <div className="left-side">
             <div className="logo">
-              <img src="assets/Fedral Youth .png" alt="Federal Youth Authority" height="40" />
-              <span>RAKYC | مجلس رأس الخيمة للشباب</span>
+              <a href="#home" style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', textDecoration: 'none', color: 'inherit' }}>
+                <img src="assets/Fedral Youth .png" alt="Federal Youth Authority" height="40" />
+                <span>RAKYC | مجلس رأس الخيمة للشباب</span>
+              </a>
             </div>
           </div>
 
