@@ -68,7 +68,17 @@ export default function Highlights() {
               transform: `translateX(0)`
             }}>
               <div className="hero-media" style={{width: 380, height: 320, minWidth: 380, minHeight: 320, maxWidth: 380, maxHeight: 320, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(255,255,255,0.08)', borderRadius: 20, boxShadow: '0 2px 16px rgba(0,0,0,0.07)', overflow: 'visible'}} onClick={() => setLightbox({ open: true, item: items[index] })}>
-                <div className="hero-placeholder" aria-hidden />
+                {/* show representative image if exists (gallery first image or img field) */}
+                {(items[index].gallery && items[index].gallery.length) || items[index].img ? (
+                  <img
+                    src={import.meta.env.BASE_URL + (items[index].img || (items[index].gallery && items[index].gallery[0]))}
+                    alt={items[index].title}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 20, display: 'block' }}
+                    onClick={() => setLightbox({ open: true, item: items[index] })}
+                  />
+                ) : (
+                  <div className="hero-placeholder" aria-hidden />
+                )}
                 <div className="media-counter" aria-hidden style={{position: 'absolute'}}>{index + 1}/{items.length}</div>
               </div>
               <div className="hero-body" style={{minHeight: 320, display: 'flex', flexDirection: 'column', justifyContent: 'center', direction: 'rtl', textAlign: 'right', alignItems: 'flex-start'}}>
@@ -146,13 +156,6 @@ function Lightbox({ item, items, onClose, openAdjacent }) {
   return (
     <div className="lightbox-backdrop" ref={backdropRef} onClick={onClose} role="presentation">
       <div className="lightbox" onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" aria-label={item.title}>
-        <div className="lb-top">
-          <div className="lb-top-right">
-            <button ref={closeButtonRef} className="lb-close-x" onClick={onClose} aria-label="Close">✕</button>
-            <div className="lb-counter">{idx + 1} / {items.length}</div>
-          </div>
-        </div>
-        <div className="lb-body">
           <div className="lb-media">
             {/* show gallery image if available, otherwise fallback to item.img */}
             {item.gallery && item.gallery.length ? (
@@ -160,29 +163,28 @@ function Lightbox({ item, items, onClose, openAdjacent }) {
             ) : (
               item.img ? <img src={import.meta.env.BASE_URL + item.img} alt={item.title} /> : <div className="lb-placeholder" />
             )}
-            {/* gallery arrows inside lightbox (only for gallery) */}
-            {item.gallery && item.gallery.length > 1 && (
+          </div>
+          {/* place gallery controls and counter below the image (not overlay) */}
+          {item.gallery && item.gallery.length > 1 && (
+            <div className="lb-media-footer">
               <div className="lb-gallery-controls">
                 <button className="lb-action" onClick={(e) => { e.stopPropagation(); setGalleryIndex((i) => (i === 0 ? item.gallery.length - 1 : i - 1)) }} aria-label="السابق">❮</button>
                 <button className="lb-action" onClick={(e) => { e.stopPropagation(); setGalleryIndex((i) => (i + 1) % item.gallery.length) }} aria-label="التالي">❯</button>
               </div>
-            )}
-          </div>
-          <div className="lb-content" style={{ padding: '6px 12px', textAlign: 'right', display: 'flex', flexDirection: 'column', justifyContent: 'center', position: 'relative' }}>
-            {/* gallery counter moved out of the image overlay and into the content pane */}
-            {item.gallery && item.gallery.length > 1 && (
               <div className="lb-gallery-counter">{galleryIndex + 1} / {item.gallery.length}</div>
-            )}
+            </div>
+          )}
+          <div className="lb-content" style={{ padding: '6px 12px', textAlign: 'right', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
             <h3 style={{ marginTop: 0 }}>{item.title}</h3>
             <small style={{ color: 'var(--muted)' }}>{item.location} — {item.date}</small>
-            <p style={{ marginTop: 12, lineHeight: 1.6 }}>{item.summary}</p>
+            {/* show short summary in the listing area; use longDescription (or fullText) inside lightbox if available */}
+            <p style={{ marginTop: 12, lineHeight: 1.6 }}>{item.longDescription || item.fullText || item.summary}</p>
             <div style={{ marginTop: 6, color: 'var(--muted)' }}>{item.caption}</div>
             <div style={{ marginTop: 14 }}>
               <button className="btn" onClick={() => openAdjacent(-1)} style={{ marginRight: 8 }}>السابق</button>
               <button className="btn" onClick={() => openAdjacent(1)}>التالي</button>
             </div>
           </div>
-        </div>
       </div>
     </div>
   )
