@@ -5,18 +5,18 @@
     "date": "13 مايو 2025",
     "location": "أبوظبي",
     "summary": "لقاء رسمي بحضور كبار المسؤولين لمناقشة سُبل دعم برامج الشباب الوطنية.",
-  "img": "/assets/shk mbz 1.jpeg",
+  "img": "assets/shk mbz 1.jpeg",
     "caption": "لقاء رسمي في أبوظبي",
     "gallery": [
-      "/assets/hhshkmbz 1.jpeg",
-      "/assets/hhshkmbz 2.jpeg",
-      "/assets/hhshkmbz 3.jpeg",
-      "/assets/hhshkmbz 4.jpeg",
-      "/assets/hhshkmbz 5.jpeg",
-      "/assets/hhshkmbz 6.jpeg",
-      "/assets/hhshkmbz 7.jpeg",
-      "/assets/hhshkmbz 8.jpeg",
-      "/assets/hhshkmbz 9.jpeg"
+      "assets/hhshkmbz 1.jpeg",
+      "assets/hhshkmbz 2.jpeg",
+      "assets/hhshkmbz 3.jpeg",
+      "assets/hhshkmbz 4.jpeg",
+      "assets/hhshkmbz 5.jpeg",
+      "assets/hhshkmbz 6.jpeg",
+      "assets/hhshkmbz 7.jpeg",
+      "assets/hhshkmbz 8.jpeg",
+      "assets/hhshkmbz 9.jpeg"
     ]
   },
   {
@@ -25,7 +25,7 @@
     "date": "01 يوليو 2025",
     "location": "رأس الخيمة",
     "summary": "جلسة عمل مع منظمات المجتمع المدني لبحث التعاون المشترك.",
-  "img": "/assets/shk saud.jpeg",
+  "img": "assets/shk saud.jpeg",
     "caption": "جلسة عمل ومستقبل التعاون"
   },
   {
@@ -34,7 +34,7 @@
     "date": "20 يونيو 2025",
     "location": "رأس الخيمة",
     "summary": "حفل افتتاح الحملة واستقبال وفود من المدارس والجامعات.",
-  "img": "/assets/shk mohd bin saud.jpeg",
+  "img": "assets/shk mohd bin saud.jpeg",
     "caption": "افتتاح الحملة"
   }
 ]
