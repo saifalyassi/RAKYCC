@@ -7,78 +7,134 @@ const members = [
     id: 1,
     name: 'إبراهيـم محمـد الجـيـري',
     role: 'رئيس المجلس',
-  photo: base + 'assets/member 1 - chairman.jpg',
-    description: 'Experienced leader with a passion for youth development and community engagement.'
+    photo: base + 'assets/member 1 - chairman.jpg',
+    description: `• بكالوريوس علوم شرطية وعدالة جنائية
+• ماجستير إدارة أعمال
+• باحث دكتوراه في إدارة المخاطر
+• نقيب ومدير فرع الإعلام الإلكتروني والتلفزيوني
+• رئيس سابق لمجلس شباب شرطة رأس الخيمة
+• مشارك في لجان وفعاليات كبرى على مستوى الإمارة`
   },
   {
     id: 2,
     name: 'فاطمـة محمـد الشـحـي',
     role: 'نائب رئيس المجلس',
-  photo: base + 'assets/member 2 - vice president.jpg',
-    description: 'Focused on educational initiatives and public outreach.'
+    photo: base + 'assets/member 2 - vice president.jpg',
+    description: `• ماجستير إدارة أعمال
+• بكالوريوس إدارة الجودة والاستراتيجية
+• أخصائي تطوير مؤسسي أول ومتخصصة في التخطيط والاستشراف وتحسين الأداء
+• مدرب معتمد
+• عضو في شبكة الإمارات للمستقبل
+• سفير القيم المؤسسية
+• قائدة وعضو فاعل في عدة لجان: الأداء، الطوارئ، الاستمرارية، مكافحة الفساد، الابتكار، السعادة`
   },
   {
     id: 3,
     name: 'فاطمـة عدنان الشرهان',
     role: 'أمين السر',
-  photo: base + 'assets/member 3.jpg',
-  photoPosition: 'center 20%',
-    description: 'Coordinates council activities and documentation.'
+    photo: base + 'assets/member 3.jpg',
+    photoPosition: 'center 20%',
+    description: `• بكالوريوس إعلام تطبيقي
+• دبلوم إدارة مشاريع
+• المركز الثاني بدبلوم خدمات المستقبل (ذكاء اصطناعي)
+• خبرة 4 سنوات في التصميم الجرافيكي وإدارة المشاريع
+• منسق عام لمهرجان زوايا للإبداع الثقافي
+• مدرب دولي معتمد وفنانة تشكيلية
+• حاصلة على لقب سفيرة الهوية الوطنية
+• شاركت في خلوة الشباب 2024 ومنتدى المدن الثقافية`
   },
   {
     id: 4,
     name: 'سـيـف خالد بوقفـل',
     role: 'مسؤول البيانات والاحصاء',
-  photo: base + 'assets/member 4.jpg',
-  photoPosition: 'center 15%',
-    description: 'Testt'
+    photo: base + 'assets/member 4.jpg',
+    photoPosition: 'center 15%',
+    description: `• رئيس لجنة استشراف المستقبل وتحليل البيانات في مجلس شباب رأس الخيمة
+• رئيس مجلس طلبة كليات التقنية العليا برأس الخيمة (2023 - 2024)
+• مبتكر مشروع “نظام غيث المائي” الحاصل على المركز الأول في عدة محافل ابتكارية
+• خريج برنامج سفراء الدبلوماسية وإعداد القادة – جامعة هارفرد (بوسطن)`
   },
   {
     id: 5,
     name: 'آمنـه إسماعيـل العوضـي',
     role: 'مسؤول التخطيط والتطوير',
-  photo: base + 'assets/member 5.jpg',
-  photoPosition: 'center 20%',
-    description: 'Organizes and oversees council events and activities.'
+    photo: base + 'assets/member 5.jpg',
+    photoPosition: 'center 20%',
+    description: `• ماجستير إدارة الابتكار
+• بكالوريوس علاقات عامة (فرعي سياحة)
+• خبرة في قيادة مكتب المدير العام وإدارة الفعاليات والمبادرات المجتمعية
+• أكملت أكثر من 20 دورة تخصصية
+• عضو نشط في 4 لجان داخلية
+• تقود فرقاً استراتيجية مثل: الابتكار، التميز المؤسسي، والطاقة`
   },
   {
     id: 6,
     name: 'خالد مراد البلوشـي',
     role: 'مسؤول الإتصال والشراكة',
-  photo: base + 'assets/member 6.png',
-  photoPosition: 'center 12%',
-    description: 'Handles media relations and council communications.'
+    photo: base + 'assets/member 6.png',
+    photoPosition: 'center 12%',
+    description: `• ماجستير إدارة أعمال (امتياز)
+• بكالوريوس اتصال جماهيري
+• خبرة 9 سنوات في الاتصال الحكومي والإعلام
+• خريج برنامج القيادات الإعلامية العربية الشابة
+• شارك ضمن وفد رئيس الدولة في مهام دولية
+• منظم فعاليات كبرى أبرزها إكسبو 2020 دبي
+• حاصل على جوائز في الإعلام وريادة الأعمال`
   },
   {
     id: 7,
     name: 'مـريـم مـحمـد الـشحـي',
     role: 'مسؤول المبادرات والمشاريع',
-  photo: base + 'assets/member 7.jpg',
-  photoPosition: 'center 30%',
-    description: 'Builds partnerships with local organizations.'
+    photo: base + 'assets/member 7.jpg',
+    photoPosition: 'center 30%',
+    description: `• بكالوريوس في الجغرافيا البيئية (تخصص فرعي دراما)
+• دبلوم رياض أطفال
+• شهادة مدرب معتمد
+• معلمة دراسات اجتماعية للحلقة الثانية
+• شاركت في ملتقى برزة معلم، ملتقى رؤى شبابية، ومهرجان طلبة الإمارات للفنون المسرحية (عمل حلم)
+• مثلت الدولة في منتدى شباب دول آسيا الوسطى ودول مجلس التعاون الخليجي (طاجكستان) لتعزيز التفاهم الثقافي وتمكين الشباب`
   },
   {
     id: 8,
     name: 'هـزاع عبدالله الـشحـي',
     role: 'المسؤول الإعلامي',
-  photo: base + 'assets/member 8.jpg',
-  photoPosition: 'center 15%',
-    description: 'Represents youth interests and feedback.'
+    photo: base + 'assets/member 8.jpg',
+    photoPosition: 'center 15%',
+    description: `• إعلامي وكاتب إماراتي
+• صدر له 3 كتب: للعمر لحظات، مرآة الفكر، ليوم حياة
+• بكالوريوس خدمة اجتماعية (نفسي)
+• ماجستير علم الاجتماع التطبيقي
+• خبرة إعلامية بهيئة الشارقة للإذاعة والتلفزيون
+• خبرة سابقة بشرطة أبوظبي
+• حاصل على جوائز منها جائزة الجودة والمركز الثاني في أبحاث علمية بألمانيا`
   },
   {
     id: 9,
     name: 'شـذى عبدالله الـمهيـري',
     role: 'مسؤول المبادرات والمشاريع',
-  photo: base + 'assets/member 9.jpg',
-  photoPosition: 'center 15%',
-    description: 'Maintains council website and digital presence.'
+    photo: base + 'assets/member 9.jpg',
+    photoPosition: 'center 15%',
+    description: `• بكالوريوس إعلام (علاقات عامة وإعلان)
+• دبلوم إدارة مشاريع
+• خبرة 10 سنوات في ريادة الأعمال والعلاقات العامة وتنظيم الفعاليات
+• المركز الخامس بدبلوم إسعاد المتعاملين
+• لقب سفيرة الهوية الوطنية
+• شاركت في خلوة الشباب 2024 (العمل والإنتاجية)
+• تنظيم منتدى المدن الثقافية 2024`
   },
   {
     id: 10,
     name: 'مـحمـد عـلـي بـريـم',
     role: 'مسؤول الدعم اللوجستي',
-  photo: base + 'assets/member 10.jpg',
-    description: 'Supports various council initiatives and projects.'
+    photo: base + 'assets/member 10.jpg',
+    description: `• بكالوريوس موارد بشرية وإدارة أعمال (2014)
+• خبرة 10 سنوات في الموارد البشرية
+• رئيس مجلس شباب كليات التقنية (2014)
+• عضو مجلس براكة للشباب (2019–2022)
+• سفير الإمارات في إكسبو ميلانو 2015 وأستانا 2017
+• سفير الهوية الوطنية (2023)
+• مدرب معتمد للجاهزية الوظيفية
+• خريج برنامج صناع الأمل (2017)`
   }
 ]
 
