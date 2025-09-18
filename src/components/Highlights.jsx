@@ -228,11 +228,9 @@ function Lightbox({ item, items, onClose, openAdjacent }) {
             </div>
           )}
           <div className="lb-content">
-            <h3 style={{ marginTop: 0 }}>{item.title}</h3>
-            <div style={{ display: 'flex', gap: 8, alignItems: 'center', direction: 'rtl', justifyContent: 'flex-start', margin: '8px 0' }}>
-              <span style={{ color: '#0a2342', fontWeight: 700 }}>{item.location}</span>
-              <span style={{ color: '#0a2342', fontWeight: 700 }}>–</span>
-              <span style={{ color: '#2176c1', fontWeight: 700 }}>{item.date}</span>
+            <h3 style={{ marginTop: '22px' }}>{item.title}</h3>
+            <div style={{ color: 'var(--muted)', fontSize: '0.98rem', fontWeight: 400, margin: '8px 0', direction: 'rtl', textAlign: 'right' }}>
+              {item.location} - {item.date}
             </div>
             <div style={{ marginTop: 12, lineHeight: 1.6, maxHeight: 260, overflowY: 'auto', padding: '0 8px', textAlign: 'right' }}>
               {item.lightboxDescription || item.longDescription || item.summary}

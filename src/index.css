@@ -545,7 +545,7 @@ body,html{margin:0;padding:0}
 .lb-top-right .lb-counter{background:#fff;padding:6px 10px;border-radius:8px;box-shadow:0 8px 20px rgba(0,0,0,0.12);font-weight:900;color:#0a2342}
 
 /* position the lightbox counter absolutely under the close icon */
-.lightbox .lb-counter{position:absolute;top:465px;right:910px;z-index:90}
+.lightbox .lb-counter{position:absolute;top:505px;right:910px;z-index:90}
 
 /* gallery controls inside lightbox media */
 /* gallery arrows remain overlayed on the image, but counter moved to content pane */
