@@ -88,7 +88,7 @@ export default function Highlights() {
                   <div style={{ width: '100%', height: '100%', borderRadius: 20, overflow: 'hidden', position: 'relative' }}>
                     <video
                       ref={heroVideoRef}
-                      src={import.meta.env.BASE_URL + items[index].video}
+                      src={items[index].video}
                       style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
                       playsInline
                       controls
@@ -98,7 +98,7 @@ export default function Highlights() {
                   </div>
                 ) : ((items[index].gallery && items[index].gallery.length) || items[index].img) ? (
                   <img
-                    src={import.meta.env.BASE_URL + (items[index].img || (items[index].gallery && items[index].gallery[0]))}
+                    src={items[index].img || (items[index].gallery && items[index].gallery[0])}
                     alt={items[index].title}
                     style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 20, display: 'block' }}
                     onClick={() => setLightbox({ open: true, item: items[index] })}
@@ -168,103 +168,70 @@ export default function Highlights() {
 function Lightbox({ item, items, onClose, openAdjacent }) {
   const backdropRef = useRef(null)
   const closeButtonRef = useRef(null)
-  const [galleryIndex, setGalleryIndex] = useState(0)
-  const videoRef = useRef(null)
-  const [currentTime, setCurrentTime] = useState(0)
-  const [duration, setDuration] = useState(0)
-  const [playing, setPlaying] = useState(false)
-  const [volume, setVolume] = useState(1)
   const idx = items.findIndex(x => x.id === item.id)
-
+  const [galleryIndex, setGalleryIndex] = useState(0)
   useEffect(() => {
     const previous = document.activeElement
-    // focus the close button for keyboard users
     closeButtonRef.current?.focus()
-    // reset gallery index when item changes
-    setGalleryIndex(0)
-    setPlaying(false)
-    setCurrentTime(0)
-    setDuration(0)
-    setVolume(1)
     return () => previous?.focus()
   }, [])
+  // Gallery logic
+  const gallery = item.gallery && item.gallery.length ? item.gallery : item.img ? [item.img] : [];
+  const hasVideo = !!item.video;
+  const totalMedia = gallery.length + (hasVideo ? 1 : 0);
+  const showVideo = hasVideo && galleryIndex === 0;
+  const showImage = gallery.length && (hasVideo ? galleryIndex > 0 : true);
+  const imageSrc = showImage ? gallery[hasVideo ? galleryIndex - 1 : galleryIndex] : null;
 
-  // keep the video time state in sync when showing the video
-  useEffect(() => {
-    const images = item.gallery ? item.gallery.length : 0
-    const isVideoIndex = item.video && galleryIndex === images
-    const v = videoRef.current
-    if (v) {
-      if (!isVideoIndex) {
-        try { v.pause() } catch (e) {}
-      }
-    }
-  }, [galleryIndex, item.video, item.gallery])
   return (
     <div className="lightbox-backdrop" ref={backdropRef} onClick={onClose} role="presentation">
-      <div className={`lightbox lb-id-${item.id}`} onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" aria-label={item.title}>
-        <div className="lb-media">
-            {
-              /* Build a virtual gallery: images first, then video as last item if present */
-            }
-            {((item.gallery && item.gallery.length) || item.video) ? (
-              (() => {
-                const images = item.gallery ? item.gallery.slice() : []
-                const hasVideo = !!item.video
-                const total = images.length + (hasVideo ? 1 : 0)
-                const isVideoIndex = hasVideo && galleryIndex === images.length
-                    if (isVideoIndex) {
-                  return (
-                    <div style={{ position: 'relative' }}>
-                      <video
-                        ref={videoRef}
-                        src={import.meta.env.BASE_URL + item.video}
-                        controls
-                        style={{ width: '100%', maxHeight: 640, objectFit: 'contain', background: '#000' }}
-                        onTimeUpdate={() => { const v = videoRef.current; if (!v) return; setCurrentTime(v.currentTime) }}
-                        onLoadedMetadata={() => { const v = videoRef.current; if (!v) return; setDuration(v.duration) }}
-                      />
-                      
-                    </div>
-                  )
-                }
-                // Otherwise show the image at galleryIndex
-                const imageSrc = images[galleryIndex]
-                return imageSrc ? (
-                  <img src={import.meta.env.BASE_URL + imageSrc} alt={item.title} />
-                ) : (item.img ? <img src={import.meta.env.BASE_URL + item.img} alt={item.title} /> : <div className="lb-placeholder" />)
-              })()
-              ) : (
-                item.img ? <img src={import.meta.env.BASE_URL + item.img} alt={item.title} /> : <div className="lb-placeholder" />
-            )}
+      <div className="lightbox" onClick={e => e.stopPropagation()} role="dialog" aria-modal="true" aria-label={item.title}>
+        <div className="lb-top" style={{ position: 'relative', width: '100%' }}>
+          <div className="lb-toolbar">
+            <div className="lb-counter">{idx + 1} / {items.length}</div>
+          </div>
+          <button
+            ref={closeButtonRef}
+            onClick={onClose}
+            aria-label="إغلاق"
+            style={{
+              position: 'absolute',
+              top: 2,
+              right: 16,
+              background: 'none',
+              border: 'none',
+              color: '#0a2342',
+              fontSize: '2rem',
+              fontWeight: 'bold',
+              cursor: 'pointer',
+              zIndex: 10,
+              padding: 0,
+            }}
+          >
+            ×
+          </button>
         </div>
-          {/* place gallery controls and counter below the image (not overlay) */}
-          {( (item.gallery && item.gallery.length) || item.video ) && (
-            <div className="lb-media-footer">
-              <div className="lb-gallery-controls">
-                <button className="lb-action" onClick={(e) => {
-                  e.stopPropagation();
-                  const images = item.gallery ? item.gallery.length : 0
-                  const total = images + (item.video ? 1 : 0)
-                  setGalleryIndex((i) => (i === 0 ? total - 1 : i - 1))
-                }} aria-label="السابق">❮</button>
-                <div className="lb-gallery-counter">{galleryIndex + 1} / {(item.gallery ? item.gallery.length : 0) + (item.video ? 1 : 0)}</div>
-                <button className="lb-action" onClick={(e) => {
-                  e.stopPropagation();
-                  const images = item.gallery ? item.gallery.length : 0
-                  const total = images + (item.video ? 1 : 0)
-                  setGalleryIndex((i) => (i + 1) % total)
-                }} aria-label="التالي">❯</button>
-              </div>
+        <div className="lb-body">
+          <div className="lb-media" style={{ position: 'relative' }}>
+            {showVideo ? (
+              <video src={item.video} poster={item.img} controls style={{ width: '100%', maxHeight: 400, objectFit: 'contain', background: '#000' }} />
+            ) : null}
+            {showImage && imageSrc ? (
+              <LazyImage src={imageSrc} alt={item.title} />
+            ) : null}
+          </div>
+          {totalMedia > 1 && (
+            <div className="lb-gallery-controls" style={{ marginTop: 16, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 16 }}>
+              <button className="lb-action" onClick={e => { e.stopPropagation(); setGalleryIndex((galleryIndex - 1 + totalMedia) % totalMedia); }} aria-label="السابق">❮</button>
+              <div className="lb-gallery-counter">{galleryIndex + 1} / {totalMedia}</div>
+              <button className="lb-action" onClick={e => { e.stopPropagation(); setGalleryIndex((galleryIndex + 1) % totalMedia); }} aria-label="التالي">❯</button>
             </div>
           )}
-          
-          <div className="lb-content" style={{ padding: '6px 12px', textAlign: 'right', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}>
+          <div className="lb-content">
             <h3 style={{ marginTop: 0 }}>{item.title}</h3>
-            <small style={{ color: 'var(--muted)' }}>{item.location} — {item.date}</small>
-            {/* lightbox-specific description (may be long) */}
-            <div className="lb-description" style={{ marginTop: 12 }}>
-              {item.lightboxDescription || item.longDescription || item.fullText || item.summary}
+            <small style={{ color: 'var(--muted)' }}>{item.date} — {item.location}</small>
+            <div style={{ marginTop: 12, lineHeight: 1.6, maxHeight: 260, overflowY: 'auto', padding: '0 8px', textAlign: 'right' }}>
+              {item.lightboxDescription || item.longDescription || item.summary}
             </div>
             <div style={{ marginTop: 6, color: 'var(--muted)' }}>{item.caption}</div>
             <div style={{ marginTop: 14 }}>
@@ -272,16 +239,8 @@ function Lightbox({ item, items, onClose, openAdjacent }) {
               <button className="btn" onClick={() => openAdjacent(1)}>التالي</button>
             </div>
           </div>
+        </div>
       </div>
     </div>
   )
 }
-
-
-function formatTime(t) {
-  if (!t || isNaN(t) || !isFinite(t)) return '0:00'
-  const sec = Math.floor(t % 60).toString().padStart(2, '0')
-  const min = Math.floor(t / 60)
-  return `${min}:${sec}`
-}
-
